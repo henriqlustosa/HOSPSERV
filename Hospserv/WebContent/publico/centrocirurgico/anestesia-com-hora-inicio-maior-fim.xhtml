@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/templates/principal.xhtml">
+	<ui:define name="corpo">
+		<h1>Anestesia com Horario de início maior que fim</h1>
+		<br />
+		<h:form id="pesquisa">
+			<p:growl id="growl" />
+			<h:panelGrid id="pnl" columns="3">
+				<p:outputLabel for="ano" value="Informe o ano: " />
+				<p:inputMask id="ano" mask="9999" value="#{cirurgiaBean.ano}" />
+				<p:commandButton id="pesqBtn" value="Pesquisar" action="#{cirurgiaBean.popularAnestHoraIniMaiorFim()}" update="pesquisa" />
+			</h:panelGrid>
+			<p:blockUI block="pesquisa" trigger="pesqBtn">
+				Carregando...
+				<br />
+				<p:graphicImage value="/resources/img/ajax-loader.gif" />
+			</p:blockUI>
+			<hr />
+			<p:dataTable id="dtRelatorio" value="#{cirurgiaBean.listaAnestHoraIniMaiorFim}" var="anestesiaMaior"
+					emptyMessage="Nenhum Registro Encontrado">
+					<f:facet name="header">
+        			Listagem
+        			<div style="float: right">
+						<h:commandLink>
+							<p:graphicImage value="/resources/imagens/excel.png" width="24" />
+							<p:dataExporter type="xls" target="dtRelatorio" fileName="porte" />
+						</h:commandLink>
+						<h:commandLink>
+							<p:graphicImage value="/resources/imagens/pdf.png" width="24" />
+							<p:dataExporter type="pdf" target="dtRelatorio" fileName="porte" />
+						</h:commandLink>
+					</div>
+				</f:facet>
+					<p:column>
+						<f:facet name="header">Número</f:facet>
+						<h:outputText value="#{anestesiaMaior.numCirurgia}" />
+					</p:column>
+					<p:column>
+						<f:facet name="header">Ano</f:facet>
+						<h:outputText value="#{anestesiaMaior.anoCirurgia}" />
+					</p:column>
+					<p:column>
+						<f:facet name="header">Prontuário</f:facet>
+						<h:outputText value="#{anestesiaMaior.prontuario}" />
+					</p:column>
+					<p:column>
+						<f:facet name="header">Data</f:facet>
+						<h:outputText value="#{anestesiaMaior.dtCirurgia}" />
+					</p:column>
+					<p:column>
+						<f:facet name="header">Hora Inicial</f:facet>
+						<h:outputText value="#{anestesiaMaior.hInicioAnest}" />
+					</p:column>
+					<p:column>
+						<f:facet name="header">Hora Final</f:facet>
+						<h:outputText value="#{anestesiaMaior.hFimAnest}" />
+					</p:column>
+					<p:column>
+						<f:facet name="header">Local</f:facet>
+						<h:outputText value="#{anestesiaMaior.salaCirurcica}" />
+					</p:column>
+				<f:facet name="footer">
+        			Total de registros #{cirurgiaBean.listaAnestHoraIniMaiorFim.size()} 
+    			</f:facet>
+			</p:dataTable>
+			
+		</h:form>
+	</ui:define>
+</ui:composition>
+</html>

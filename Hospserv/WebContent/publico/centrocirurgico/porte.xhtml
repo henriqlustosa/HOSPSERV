@@ -1,0 +1,99 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/templates/principal.xhtml">
+	<ui:define name="corpo">
+		<h1>Cirurgias Realizadas por Porte</h1>
+		<br />
+		<p:growl id="growl" />
+		<h:form id="porteCirurgia">
+			
+			<h:panelGrid id="pnl" columns="2">
+				<p:outputLabel for="porte" value="Porte:" />
+				<p:selectOneMenu id="porte" value="#{cirurgiaBean.porte}" style="width:60px" >
+					<f:selectItem itemLabel="1" itemValue="1" />
+					<f:selectItem itemLabel="2" itemValue="2" />
+					<f:selectItem itemLabel="3" itemValue="3" />
+					<f:selectItem itemLabel="4" itemValue="4" />
+					<f:selectItem itemLabel="5" itemValue="5" />
+					<f:selectItem itemLabel="6" itemValue="6" />
+				</p:selectOneMenu>
+				<p:outputLabel for="ano" value="Informe o Ano:" />
+				<p:inputMask id="ano" mask="9999" value="#{cirurgiaBean.ano}" />
+
+				<p:outputLabel />
+				<p:commandButton id="pesqBtn" value="Pesquisar"
+					action="#{cirurgiaBean.popularPorte()}" update="porteCirurgia" />
+			</h:panelGrid>
+
+			<p:blockUI block="porteCirurgia" trigger="pesqBtn">
+				Carregando...
+				<br />
+				<p:graphicImage value="/resources/img/ajax-loader.gif" />
+			</p:blockUI>
+			<hr />
+			<!--
+			<p:commandButton value="Imprimir" type="button" icon="ui-icon-print"
+				style="display:block;margin-bottom: 10px">
+				<p:printer target="dtRelatorio" />
+			</p:commandButton>
+			  -->
+			<p:dataTable id="dtRelatorio" var="porte"
+				value="#{cirurgiaBean.listPorte}"
+				emptyMessage="Nenhum Registro Encontrado" style="font-size: 15px"
+				scrollable="true" scrollHeight="300" >
+				<f:facet name="header">
+        			Lista de Cirurgias
+        			<div style="float: right">
+						<h:commandLink>
+							<p:graphicImage value="/resources/imagens/excel.png" width="24" />
+							<p:dataExporter type="xls" target="dtRelatorio" fileName="porte" />
+						</h:commandLink>
+						<h:commandLink>
+							<p:graphicImage value="/resources/imagens/pdf.png" width="24" />
+							<p:dataExporter type="pdf" target="dtRelatorio" fileName="porte" />
+						</h:commandLink>
+					</div>
+				</f:facet>
+
+				<p:column headerText="Código">
+					<h:outputText value="#{porte.numCirurgia}" />
+				</p:column>
+
+				<p:column headerText="Ano">
+					<h:outputText value="#{porte.anoCirurgia}" />
+				</p:column>
+
+				<p:column headerText="Prontuário">
+					<h:outputText value="#{porte.prontuario}" />
+				</p:column>
+
+				<p:column headerText="Data da Cirurgia">
+					<h:outputText value="#{porte.dtCirurgia}" />
+				</p:column>
+
+				<p:column headerText="Hora Inicio">
+					<h:outputText value="#{porte.hInicioCirur}" />
+				</p:column>
+
+				<p:column headerText="Hora Fim">
+					<h:outputText value="#{porte.hfimCirur}" />
+				</p:column>
+				<p:column headerText="Sala">
+					<h:outputText value="#{porte.salaCirurcica}" />
+				</p:column>
+				<p:column headerText="Porte">
+					<h:outputText value="#{porte.porte}" />
+				</p:column>
+				<f:facet name="footer">
+        			Total de registros #{cirurgiaBean.listPorte.size()} 
+    			</f:facet>
+			</p:dataTable>
+		</h:form>
+	</ui:define>
+</ui:composition>
+</html>

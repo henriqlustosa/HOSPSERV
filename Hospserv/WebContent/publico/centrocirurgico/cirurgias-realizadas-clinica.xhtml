@@ -1,0 +1,113 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/templates/principal.xhtml">
+	
+	<ui:define name="corpo">
+		<h1>Cirurgias Realizadas por Clínica</h1>
+		<br />
+		<h:form id="cirRealizadas">
+			<p:growl id="growl" />
+			<h:panelGrid id="pnl" columns="4" cellpadding="5">
+				<p:outputLabel for="dtIni" value="Período inicial:" />
+				<p:inputMask id="dtIni" mask="99/99/9999"
+					value="#{cirurgiaBean.dtInicio}" />
+
+				<p:outputLabel for="dtFim" value="Período final:" />
+				<p:inputMask id="dtFim" mask="99/99/9999"
+					value="#{cirurgiaBean.dtFim}" />
+
+				<p:outputLabel for="clinica" value="Clínica a ser impressa:" />
+				<p:selectOneMenu id="clinica" value="#{cirurgiaBean.codClin}">
+					<f:selectItem itemLabel="Selecione... " itemValue="" />
+					<f:selectItems value="#{clinicaBean.listaClinicas()}" var="clin"
+						itemLabel="#{clin.descricao}" itemValue="#{clin.codClinica}" />
+				</p:selectOneMenu>
+
+				<p:outputLabel />
+				<p:commandButton id="pesqBtn" value="Pesquisar"
+					action="#{cirurgiaBean.cirurgiasRealizadasClinicas()}"
+					update="@form" />
+			</h:panelGrid>
+
+			<p:blockUI block="cirRealizadas" trigger="pesqBtn">
+				Carregando...
+				<br />
+				<p:graphicImage value="/resources/img/ajax-loader.gif" />
+			</p:blockUI>
+			<hr />
+			<h:commandLink>
+				<p:graphicImage value="/resources/imagens/excel.png" width="24" />
+				<p:dataExporter type="xls" target="dt" fileName="porte" />
+			</h:commandLink>
+			<h:commandLink>
+				<p:graphicImage value="/resources/imagens/pdf.png" width="24" />
+				<p:dataExporter type="pdf" target="dt" fileName="porte" />
+			</h:commandLink>
+			
+			<p:dataTable id="dt" var="cirurgia"
+				value="#{cirurgiaBean.listaRealizadaClinica}"
+				emptyMessage="Nenhum Registro Encontrado"
+				scrollable="true" scrollHeight="300">
+				<f:facet name="header">
+        			Lista de Cirurgias Realizadas por Clínica
+        			
+        			<p:commandButton id="toggler" type="button" value="Colunas" icon="ui-icon-calculator" />
+        			<p:columnToggler datasource="dt" trigger="toggler" />
+
+				</f:facet>
+				<p:column headerText="Data" >
+					<h:outputText value="#{cirurgia.dtCirurgia}" />
+				</p:column>
+
+				<p:column headerText="Cirurgia">
+					<h:outputText
+						value="#{cirurgia.numCirurgia}/#{cirurgia.anoCirurgia}" />
+				</p:column>
+
+				<p:column headerText="Prontuário">
+					<h:outputText value="#{cirurgia.prontuario}" />
+				</p:column>
+				<p:column headerText="Inicio Cirurgia">
+					<h:outputText value="#{cirurgia.hInicioCirur}" />
+				</p:column>
+				<p:column headerText="Fim Cirurgia">
+					<h:outputText value="#{cirurgia.hfimCirur}" />
+				</p:column>
+				<p:column headerText="Tempo Cirurgia">
+					<h:outputText value="#{cirurgia.tempoCirur}" />
+				</p:column>
+				<p:column headerText="Inicio Anestesia">
+					<h:outputText value="#{cirurgia.hInicioAnest}" />
+				</p:column>
+				<p:column headerText="Fim Anestesia">
+					<h:outputText value="#{cirurgia.hFimAnest}" />
+				</p:column>
+				<p:column headerText="Tempo da Anestesia">
+					<h:outputText value="#{cirurgia.tempoAnest}" />
+				</p:column>
+				<p:column headerText="Entrada Recuperação">
+					<h:outputText value="#{cirurgia.hEntrec}" />
+				</p:column>
+				<p:column headerText="Saida Recuperação">
+					<h:outputText value="#{cirurgia.hSairec}" />
+				</p:column>
+				<p:column headerText="Tempo de RPA">
+					<h:outputText value="#{cirurgia.tempoRPA}" />
+				</p:column>
+
+				<p:column headerText="Sala Cirúrgica"  style="width:110px">
+					<h:outputText value="#{cirurgia.salaCirurcica}" />
+				</p:column>
+				<f:facet name="footer">
+        			Total de registros #{cirurgiaBean.listaRealizadaClinica.size()} 
+    			</f:facet>
+			</p:dataTable>
+		</h:form>
+	</ui:define>
+</ui:composition>
+</html>

@@ -1,0 +1,81 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+
+<h:head>
+	<f:facet name="first">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+		<title><ui:insert name="titulo">Relatórios Centro Cirurgico</ui:insert></title>
+	</f:facet>
+
+	<f:facet name="middle">
+		<h:outputStylesheet library="css" name="bootstrap.css" />
+		<h:outputStylesheet library="font-awesome" name="css/font-awesome.css" />
+		<h:outputStylesheet library="css" name="style.css" />
+		<h:outputStylesheet library="css" name="style-responsive.css" />
+	</f:facet>
+
+	<f:facet name="last">
+	</f:facet>
+</h:head>
+
+<h:body>
+
+	<!-- **********************************************************************************************************************************************************
+      MAIN CONTENT
+      *********************************************************************************************************************************************************** -->
+	<div id="login-page">
+		<div class="container">
+			<form class="form-login" id="login" method="post"
+				action="#{request.contextPath}/j_spring_security_check">
+				<h2 class="form-login-heading">Acesso</h2>
+
+				<div style="text-align: center; color: red">
+					<h:panelGroup rendered="#{!empty param.login_error}">
+						<br />
+						<span>Erro ao efetuar o login.</span>
+						<br />
+						Motivo: #{SPRING_SECURITY_LAST_EXCEPTION.message}
+				</h:panelGroup>
+				</div>
+
+				<div class="login-wrap">
+					<input type='text' name='j_username' class="form-control"
+						placeholder="Usuário" /> <br /> <input type='password'
+						name='j_password' class="form-control" placeholder="Senha" />
+
+					<div class="modal-footer">
+					<ul class="btn btn-default">
+						<li><a href="#{request.contextPath}/j_spring_security_logout"  class="logout">Cancelar</a></li>
+					</ul><input class="btn btn-primary btn-md" type="submit" value="Entrar" style="width: 85px"/>
+					</div>
+
+
+
+				</div>
+			</form>
+		</div>
+	</div>
+	<script>
+				document.getElementById("login").j_username.value="#{SPRING_SECURITY_LAST_USERNAME}";
+			</script>
+	<!-- js placed at the end of the document so the pages load faster -->
+	<h:outputScript library="js" name="jquery.js" />
+	<h:outputScript library="js" name="bootstrap.min.js" />
+	<!--BACKSTRETCH-->
+	<!-- You can use an image of whatever size. This script will stretch to fit in any screen size.-->
+	<h:outputScript library="js" name="jquery.backstretch.min.js" />
+	<script>
+        $.backstretch("../resources/img/login-bg.jpg", {speed: 500});
+    </script>
+
+
+</h:body>
+</html>

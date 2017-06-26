@@ -1,0 +1,47 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/templates/principal.xhtml">
+	<ui:define name="corpo">
+		<h1>Gráficos de Cirurgias Realizadas por Porte</h1>
+		<br />
+		<h:form id="porteCirurgia">
+			<p:growl id="growl" />
+			<h:panelGrid id="pnl" columns="2">
+				<p:outputLabel for="ano" value="Informe o Ano:" />
+				<p:inputMask id="ano" mask="9999" value="#{porteBean.ano}" />
+
+				<p:outputLabel />
+				<p:commandButton id="portebtn" value="Gerar Gráfico"
+					action="#{porteBean.gerarGraficoPorte()}" update="graficoPorte" />
+
+			</h:panelGrid>
+
+			<p:blockUI block="porteCirurgia" trigger="portebtn">
+				Carregando...
+				<br />
+				<p:graphicImage value="/resources/img/ajax-loader.gif" />
+			</p:blockUI>
+			<hr />
+
+			<h:panelGroup id="graficoPorte" layout="block">
+				<h:panelGrid columns="2">
+					<p:chart type="pie" model="#{porteBean.piemodelPorte}"
+						style="width:500px;height:400px"
+						rendered="#{porteBean.piemodelPorte != null}"></p:chart>
+
+
+					<p:chart type="bar" model="#{porteBean.barModel}"
+						style="width:500px; height:400px"
+						rendered="#{porteBean.barModel != null}" />
+				</h:panelGrid>
+
+			</h:panelGroup>
+		</h:form>
+	</ui:define>
+</ui:composition>
+</html>
