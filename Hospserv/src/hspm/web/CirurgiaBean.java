@@ -49,6 +49,8 @@ public class CirurgiaBean implements Serializable {
 	
 	private List<Cirurgia> listaAnestHoraFimMenorFimCir;
 	
+	private List<Cirurgia> listarCampoEncaminhaVazio;
+	
 	
 	public void popularAnestHoraFimMenorFimCir(){
 		setListaAnestHoraFimMenorFimCir(new CirurgiaDAOOpenbase().listarFimAnestMenorFimCir(ano));
@@ -74,6 +76,9 @@ public class CirurgiaBean implements Serializable {
 		setListaCirHoraIniMaiorFim(new CirurgiaDAOOpenbase().listarIniCirMaiorFim(ano));
 	}
 
+	public void popularListarCampoEncaminhaVazio(){
+		setListarCampoEncaminhaVazio(new CirurgiaDAOOpenbase().listarCampoEncaminhaVazio());
+	}
 	
 
 	public Cirurgia getCirurgia() {
@@ -168,5 +173,13 @@ public class CirurgiaBean implements Serializable {
 
 	public void setListPorte(List<Cirurgia> listPorte) {
 		this.listPorte = listPorte;
+	}
+
+	public List<Cirurgia> getListarCampoEncaminhaVazio() {
+		return listarCampoEncaminhaVazio;
+	}
+
+	public void setListarCampoEncaminhaVazio(List<Cirurgia> listarCampoEncaminhaVazio) {
+		this.listarCampoEncaminhaVazio = listarCampoEncaminhaVazio;
 	}
 }

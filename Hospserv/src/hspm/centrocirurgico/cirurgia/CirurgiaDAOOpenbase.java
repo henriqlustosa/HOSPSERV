@@ -341,4 +341,40 @@ public class CirurgiaDAOOpenbase implements CirurgiaDAO {
 		return lista;
 	}
 
+	@Override
+	public List<Cirurgia> listarCampoEncaminhaVazio() {
+		Connection conn = new ConexaoOpenbase().getConnection();
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		List<Cirurgia> lista = new ArrayList<Cirurgia>();
+		Cirurgia e;
+		try {
+			stmt = conn.prepareStatement("Select i38numseq,i38anoref,d38dataexec from cir38 where c38encaminha = '' ");
+			//stmt.setInt(1, ano);
+			rs = stmt.executeQuery();
+			while (rs.next()) {
+				e = new Cirurgia();
+				e.setNumCirurgia(rs.getInt("i38numseq"));
+				e.setAnoCirurgia(rs.getInt("i38anoref"));
+				e.setDtCirurgia(FormataDataHora.formataData(rs.getString("d38dataexec")));
+				//e.sethInicioCirur(FormataDataHora.formataHora(rs.getString("c38hiniexec")));
+				//e.setHfimCirur(FormataDataHora.formataHora(rs.getString("c38hfimexec")));
+				
+
+				lista.add(e);
+				e = null;
+			}
+		} catch (SQLException ex) {
+			System.out.println("Erro ao listar cirurgias. Mensagem: " + ex.getMessage());
+		} finally {
+			try {
+				stmt.close();
+				conn.close();
+			} catch (Throwable ex) {
+				System.out.println("Erro ao fechar operações de busca. Mensagem: " + ex.getMessage());
+			}
+		}
+		return lista;
+	}
+
 }
