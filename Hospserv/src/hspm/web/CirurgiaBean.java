@@ -6,6 +6,8 @@ import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 
+import hspm.centrocirurgico.anestesia.Anestesia;
+import hspm.centrocirurgico.anestesia.AnestesiaDAOOpenbase;
 import hspm.centrocirurgico.cirurgia.Cirurgia;
 import hspm.centrocirurgico.cirurgia.CirurgiaDAOOpenbase;
 
@@ -23,6 +25,7 @@ public class CirurgiaBean implements Serializable {
 	private String dtInicio;
 	private String dtFim;
 	private String porte;
+	private String codAnestesia;
 
 	
 	
@@ -50,7 +53,16 @@ public class CirurgiaBean implements Serializable {
 	private List<Cirurgia> listaAnestHoraFimMenorFimCir;
 	
 	private List<Cirurgia> listarCampoEncaminhaVazio;
+	private List<Cirurgia> listarQuantidadeAnestesia;
 	
+	
+	public List<Anestesia> listaAnestesias(){
+	     List<Anestesia> lista;
+	     lista = new AnestesiaDAOOpenbase().listar();//Carrega a lista do Banco de dados
+	     return lista;
+	}
+	
+
 	
 	public void popularAnestHoraFimMenorFimCir(){
 		setListaAnestHoraFimMenorFimCir(new CirurgiaDAOOpenbase().listarFimAnestMenorFimCir(ano));
@@ -78,6 +90,9 @@ public class CirurgiaBean implements Serializable {
 
 	public void popularListarCampoEncaminhaVazio(){
 		setListarCampoEncaminhaVazio(new CirurgiaDAOOpenbase().listarCampoEncaminhaVazio());
+	}	
+	public void popularListarQuantidadeAnestesia(){
+		setListarQuantidadeAnestesia(new CirurgiaDAOOpenbase().listarQuantidadeAnestesia(dtInicio, dtFim, codAnestesia));
 	}
 	
 
@@ -182,4 +197,22 @@ public class CirurgiaBean implements Serializable {
 	public void setListarCampoEncaminhaVazio(List<Cirurgia> listarCampoEncaminhaVazio) {
 		this.listarCampoEncaminhaVazio = listarCampoEncaminhaVazio;
 	}
+
+	public String getCodAnestesia() {
+		return codAnestesia;
+	}
+
+	public void setCodAnestesia(String codAnestesia) {
+		this.codAnestesia = codAnestesia;
+	}
+
+	public List<Cirurgia> getListarQuantidadeAnestesia() {
+		return listarQuantidadeAnestesia;
+	}
+
+	public void setListarQuantidadeAnestesia(List<Cirurgia> listarQuantidadeAnestesia) {
+		this.listarQuantidadeAnestesia = listarQuantidadeAnestesia;
+	}
+
+	
 }

@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/templates/principal.xhtml">
+	<ui:define name="corpo">
+	<h:form id ="qtdAnestesias">
+	<h:panelGrid columns="4">
+		<p:outputLabel for="dtIni" value="Período inicial:" />
+				<p:inputMask id="dtIni" mask="99/99/9999"
+					value="#{cirurgiaBean.dtInicio}" />
+
+				<p:outputLabel for="dtFim" value="Período final:" />
+				<p:inputMask id="dtFim" mask="99/99/9999"
+					value="#{cirurgiaBean.dtFim}" />
+	
+	<p:outputLabel value="Tipo de Anestesia: " />
+
+	<p:selectOneMenu id="anest" value="#{cirurgiaBean.codAnestesia}" >
+					<f:selectItem itemLabel="Selecione... " itemValue="" />
+					<f:selectItems value="#{cirurgiaBean.listaAnestesias()}" var="ane"
+						itemLabel="#{ane.descAnestesia}" itemValue="#{ane.codAnestesia}" />
+				</p:selectOneMenu>
+		<p:commandButton id="pesqBtn" value="Pesquisar"
+					action="#{cirurgiaBean.popularListarQuantidadeAnestesia()}"
+					update="@form" />
+			</h:panelGrid>
+	
+	
+			<p:blockUI block="qtdAnestesias" trigger="pesqBtn">
+				Carregando...
+				<br />
+				<p:graphicImage value="/resources/img/ajax-loader.gif" />
+			</p:blockUI>
+			<hr />
+			<h:commandLink>
+				<p:graphicImage value="/resources/imagens/excel.png" width="24" />
+				<p:dataExporter type="xls" target="dt" fileName="porte" />
+			</h:commandLink>
+			<h:commandLink>
+				<p:graphicImage value="/resources/imagens/pdf.png" width="24" />
+				<p:dataExporter type="pdf" target="dt" fileName="porte" />
+			</h:commandLink>
+			
+			<p:dataTable id="dt" var="cirurgia"
+				value="#{cirurgiaBean.listarQuantidadeAnestesia}"
+				emptyMessage="Nenhum Registro Encontrado"
+				scrollable="true" scrollHeight="300">
+				<f:facet name="header">
+        			Quantidade de Números de Anestesias por Tipo
+        			
+        			<p:commandButton id="toggler" type="button" value="Colunas" icon="ui-icon-calculator" />
+        			<p:columnToggler datasource="dt" trigger="toggler" />
+
+				</f:facet>
+				<p:column headerText="Quantidade" >
+					<h:outputText value="#{cirurgia.qtdAnestesia1PorTipo}" />
+				</p:column>
+
+				
+			</p:dataTable>
+	
+	
+	
+	</h:form>
+	
+	
+	
+	</ui:define>
+</ui:composition>
+</html>

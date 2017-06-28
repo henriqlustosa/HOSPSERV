@@ -12,6 +12,7 @@ public interface CirurgiaDAO {
 	public List<Cirurgia> listaCirurgiasRealizadasClicnica(String dtInicio, String dtFim, String codClin);
 	public List<Cirurgia> listarPorteGrafico(Integer ano);
 	public List<Cirurgia> listarCampoEncaminhaVazio();
+	public List<Cirurgia> listarQuantidadeAnestesia(String dtInicio, String dtFim,  String codAnestesia);
 
 	
 }

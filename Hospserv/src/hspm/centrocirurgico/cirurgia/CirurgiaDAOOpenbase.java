@@ -376,5 +376,41 @@ public class CirurgiaDAOOpenbase implements CirurgiaDAO {
 		}
 		return lista;
 	}
+	@Override
+	public List<Cirurgia> listarQuantidadeAnestesia(String dtInicio, String dtFim, String codAnestesia){
+		dtInicio = FormataDataHora.tirarBarrasData(dtInicio);
+		dtFim = FormataDataHora.tirarBarrasData(dtFim);
+		Connection conn = new ConexaoOpenbase().getConnection();
+		ResultSet rs = null;
+		PreparedStatement stmt = null;
+		String sql = "select count(c38codanest1) as qtd1 from cir38 where c38codanest1 = ? and d38dataexec >= ? and d38dataexec <=?";
+		List<Cirurgia> lista = new ArrayList<Cirurgia>();
+		Cirurgia p;
+		try {
+			stmt = conn.prepareStatement(sql);
+			stmt.setString(1, codAnestesia);
+			stmt.setString(2, dtInicio);
+			stmt.setString(3, dtFim);
+			rs = stmt.executeQuery();
+			while (rs.next()) {
+				p = new Cirurgia();
+				p.setQtdAnestesia1PorTipo(rs.getInt("qtd1"));
+			
+				lista.add(p);
+				p = null;
+			}
+		} catch (Exception e) {
+			System.out.println("Erro ao listar porte. Mensagem: " + e.getMessage());
+		} finally {
+			try {
+				stmt.close();
+				conn.close();
+			} catch (Throwable ex) {
+				System.out.println("Erro ao fechar operações de busca. Mensagem: " + ex.getMessage());
+			}
+		}
+		return lista;
+	}
+
 
 }
