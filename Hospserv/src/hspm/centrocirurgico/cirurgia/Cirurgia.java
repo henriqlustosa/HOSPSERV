@@ -33,11 +33,10 @@ public class Cirurgia implements Serializable {
 	private String tempoAnest;
 	private String tempoRPA;
 	private Integer qtdPorte;
-	private Integer qtdAnestesia1PorTipo;
-	private Integer qtdAnestesia2PorTipo;
+
 	
 	
-	
+
 	public Integer getQtdPorte() {
 		return qtdPorte;
 	}
@@ -161,16 +160,5 @@ public class Cirurgia implements Serializable {
 	public void setPorte(String porte) {
 		this.porte = porte;
 	}
-	public Integer getQtdAnestesia1PorTipo() {
-		return qtdAnestesia1PorTipo;
-	}
-	public void setQtdAnestesia1PorTipo(Integer qtdAnestesia1PorTipo) {
-		this.qtdAnestesia1PorTipo = qtdAnestesia1PorTipo;
-	}
-	public Integer getQtdAnestesia2PorTipo() {
-		return qtdAnestesia2PorTipo;
-	}
-	public void setQtdAnestesia2PorTipo(Integer qtdAnestesia2PorTipo) {
-		this.qtdAnestesia2PorTipo = qtdAnestesia2PorTipo;
-	}
+	
 }

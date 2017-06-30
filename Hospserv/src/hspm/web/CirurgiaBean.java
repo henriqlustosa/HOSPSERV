@@ -6,8 +6,7 @@ import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 
-import hspm.centrocirurgico.anestesia.Anestesia;
-import hspm.centrocirurgico.anestesia.AnestesiaDAOOpenbase;
+
 import hspm.centrocirurgico.cirurgia.Cirurgia;
 import hspm.centrocirurgico.cirurgia.CirurgiaDAOOpenbase;
 
@@ -53,14 +52,10 @@ public class CirurgiaBean implements Serializable {
 	private List<Cirurgia> listaAnestHoraFimMenorFimCir;
 	
 	private List<Cirurgia> listarCampoEncaminhaVazio;
-	private List<Cirurgia> listarQuantidadeAnestesia;
+
 	
 	
-	public List<Anestesia> listaAnestesias(){
-	     List<Anestesia> lista;
-	     lista = new AnestesiaDAOOpenbase().listar();//Carrega a lista do Banco de dados
-	     return lista;
-	}
+
 	
 
 	
@@ -91,9 +86,6 @@ public class CirurgiaBean implements Serializable {
 	public void popularListarCampoEncaminhaVazio(){
 		setListarCampoEncaminhaVazio(new CirurgiaDAOOpenbase().listarCampoEncaminhaVazio());
 	}	
-	public void popularListarQuantidadeAnestesia(){
-		setListarQuantidadeAnestesia(new CirurgiaDAOOpenbase().listarQuantidadeAnestesia(dtInicio, dtFim, codAnestesia));
-	}
 	
 
 	public Cirurgia getCirurgia() {
@@ -206,13 +198,6 @@ public class CirurgiaBean implements Serializable {
 		this.codAnestesia = codAnestesia;
 	}
 
-	public List<Cirurgia> getListarQuantidadeAnestesia() {
-		return listarQuantidadeAnestesia;
-	}
-
-	public void setListarQuantidadeAnestesia(List<Cirurgia> listarQuantidadeAnestesia) {
-		this.listarQuantidadeAnestesia = listarQuantidadeAnestesia;
-	}
 
 	
 }

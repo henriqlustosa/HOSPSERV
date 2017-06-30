@@ -7,29 +7,25 @@
 
 <ui:composition template="/templates/principal.xhtml">
 	<ui:define name="corpo">
-	<h:form id ="qtdAnestesias">
-	<h:panelGrid columns="4">
-		<p:outputLabel for="dtIni" value="Período inicial:" />
-				<p:inputMask id="dtIni" mask="99/99/9999"
-					value="#{cirurgiaBean.dtInicio}" />
+		<h:form id="qtdAnestesias">
+			<h:panelGrid columns="2">
 
-				<p:outputLabel for="dtFim" value="Período final:" />
-				<p:inputMask id="dtFim" mask="99/99/9999"
-					value="#{cirurgiaBean.dtFim}" />
-	
-	<p:outputLabel value="Tipo de Anestesia: " />
 
-	<p:selectOneMenu id="anest" value="#{cirurgiaBean.codAnestesia}" >
-					<f:selectItem itemLabel="Selecione... " itemValue="" />
-					<f:selectItems value="#{cirurgiaBean.listaAnestesias()}" var="ane"
-						itemLabel="#{ane.descAnestesia}" itemValue="#{ane.codAnestesia}" />
-				</p:selectOneMenu>
-		<p:commandButton id="pesqBtn" value="Pesquisar"
-					action="#{cirurgiaBean.popularListarQuantidadeAnestesia()}"
+
+				<p:outputLabel for="ano" value="Informe o Ano:" />
+				<p:inputMask id="ano" mask="9999" value="#{anestesiaBean.ano}" />
+
+				<p:outputLabel />
+
+
+
+
+				<p:commandButton id="pesqBtn" value="Pesquisar"
+					action="#{anestesiaBean.popularListarQuantidadeAnestesia()}"
 					update="@form" />
 			</h:panelGrid>
-	
-	
+
+
 			<p:blockUI block="qtdAnestesias" trigger="pesqBtn">
 				Carregando...
 				<br />
@@ -44,31 +40,73 @@
 				<p:graphicImage value="/resources/imagens/pdf.png" width="24" />
 				<p:dataExporter type="pdf" target="dt" fileName="porte" />
 			</h:commandLink>
-			
-			<p:dataTable id="dt" var="cirurgia"
-				value="#{cirurgiaBean.listarQuantidadeAnestesia}"
-				emptyMessage="Nenhum Registro Encontrado"
-				scrollable="true" scrollHeight="300">
+
+			<p:dataTable id="dt" var="anestesia"
+				value="#{anestesiaBean.listarQuantidadeAnestesia}"
+				emptyMessage="Nenhum Registro Encontrado" scrollable="true"
+				scrollHeight="300">
 				<f:facet name="header">
         			Quantidade de Números de Anestesias por Tipo
         			
-        			<p:commandButton id="toggler" type="button" value="Colunas" icon="ui-icon-calculator" />
-        			<p:columnToggler datasource="dt" trigger="toggler" />
+        			<p:commandButton id="toggler" type="button" value="Colunas"
+						icon="ui-icon-calculator" />
+					<p:columnToggler datasource="dt" trigger="toggler" />
 
 				</f:facet>
-				<p:column headerText="Quantidade" >
-					<h:outputText value="#{cirurgia.qtdAnestesia1PorTipo}" />
+
+				<p:column headerText="Nome da Anestesia">
+					<h:outputText value="#{anestesia.descAnestesia}" />
 				</p:column>
 
 				
+				<p:column headerText="JAN">
+					<h:outputText value="#{anestesia.qtdJan}" />
+				</p:column>
+				<p:column headerText="FEV">
+					<h:outputText value="#{anestesia.qtdFev}" />
+				</p:column>
+				<p:column headerText="MAR">
+					<h:outputText value="#{anestesia.qtdMar}" />
+				</p:column>
+				<p:column headerText="ABR">
+					<h:outputText value="#{anestesia.qtdAbr}" />
+				</p:column>
+				<p:column headerText="MAI">
+					<h:outputText value="#{anestesia.qtdMai}" />
+				</p:column>
+				<p:column headerText="JUN">
+					<h:outputText value="#{anestesia.qtdJun}" />
+				</p:column>
+				<p:column headerText="JUL">
+					<h:outputText value="#{anestesia.qtdJul}" />
+				</p:column>
+				<p:column headerText="AGO">
+					<h:outputText value="#{anestesia.qtdAgo}" />
+				</p:column>
+				<p:column headerText="SET">
+					<h:outputText value="#{anestesia.qtdSet}" />
+				</p:column>
+				<p:column headerText="OUT">
+					<h:outputText value="#{anestesia.qtdOut}" />
+				</p:column>
+				<p:column headerText="NOV">
+					<h:outputText value="#{anestesia.qtdNov}" />
+				</p:column>
+				<p:column headerText="DEZ">
+					<h:outputText value="#{anestesia.qtdDez}" />
+				</p:column>
+				<p:column headerText="TOTAL">
+					<h:outputText value="#{anestesia.total}" />
+				</p:column>
+
 			</p:dataTable>
-	
-	
-	
-	</h:form>
-	
-	
-	
+
+
+
+		</h:form>
+
+
+
 	</ui:define>
 </ui:composition>
 </html>
