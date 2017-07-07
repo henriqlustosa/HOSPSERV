@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xml>
 <Context reloadable="true">
 	<Resource name="jdbc/HospservDB"
 		auth="Container"
@@ -7,7 +8,7 @@
 		maxIdle="30"
 		maxWait="10000"
 		username="root"
-		password="root"
+		password="calamares"
 		driverClassName="com.mysql.jdbc.Driver"
-		url="jdbc:mysql://localhost:3306/hospserv?autoReconnect=true"/>
+		url="jdbc:mysql://10.48.19.62:3306/hospserv?autoReconnect=true"/>
 </Context>

@@ -7,6 +7,8 @@
 
 	<ui:composition template="/templates/principal.xhtml">
 	<ui:define name="corpo">
+	<h1>Relatório de Quantidade de Cirurgias por Anestesistas</h1>
+		<br />
 		<h:form id="relatorio3">
 			<h:panelGrid columns="2">
 
@@ -42,7 +44,7 @@
 				emptyMessage="Nenhum Registro Encontrado" scrollable="true"
 				scrollHeight="300">
 				<f:facet name="header">
-        			Quantidade de Cirurgias por Profissional
+        			Quantidade de Cirurgias por Profissional (Anestesista)
         			
         			<p:commandButton id="toggler" type="button" value="Colunas"
 						icon="ui-icon-calculator" />

@@ -4,9 +4,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
-import hspm.centrocirurgico.cirurgia.Cirurgia;
+
 import hspm.util.ConexaoOpenbase;
 
 public class AnestesiaDAOOpenbase implements AnestesiaDAO {
@@ -37,7 +38,7 @@ public class AnestesiaDAOOpenbase implements AnestesiaDAO {
 				stmt.close();
 				conn.close();
 			} catch (Throwable ex) {
-				System.out.println("Erro ao fechar operações de busca. Mensagem: " + ex.getMessage());
+				System.out.println("Erro ao fechar operações deeee busca. Mensagem: " + ex.getMessage());
 			}
 		}
 
@@ -199,10 +200,11 @@ public class AnestesiaDAOOpenbase implements AnestesiaDAO {
 			Integer total = jan + fev + mar + abr + +mai + jun + jul + ago + set + out + nov + dez;
 			p.setTotal(total);
 			lista.add(p);
+
 			p = null;
 			total = 0;
 		}
-
+		
 		return lista;
 
 	}
@@ -258,7 +260,7 @@ public class AnestesiaDAOOpenbase implements AnestesiaDAO {
 						conn1.close();
 					} catch (Throwable ex) {
 						System.out.println(
-								"Erro ao fechar operações de busca neste relatório. Mensagem: " + ex.getMessage());
+								"Erro ao fechar operações de busca neste relatório . Mensagem: " + ex.getMessage());
 					}
 				}
 
@@ -357,7 +359,8 @@ public class AnestesiaDAOOpenbase implements AnestesiaDAO {
 				System.out.println("Erro ao fechar operações de busca. Mensagem: " + ex.getMessage());
 			}
 		}
-
+		Comparator<Anestesia> c = (s1, s2) -> s1.getNomeProfissional().compareTo(s2.getNomeProfissional());
+	    lista.sort(c);
 		return lista;
 
 	}
