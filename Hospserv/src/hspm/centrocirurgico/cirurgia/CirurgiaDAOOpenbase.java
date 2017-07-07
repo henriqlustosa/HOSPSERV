@@ -341,16 +341,17 @@ public class CirurgiaDAOOpenbase implements CirurgiaDAO {
 	}
 
 	@Override
-	public List<Cirurgia> listarCampoEncaminhaVazio() {
+	public List<Cirurgia> listarCampoEncaminhaVazio(Integer ano) {
 		Connection conn = new ConexaoOpenbase().getConnection();
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		List<Cirurgia> lista = new ArrayList<Cirurgia>();
 		Cirurgia e;
 		try {
-			stmt = conn.prepareStatement("Select i38numseq,i38anoref,d38dataexec from cir38 where c38encaminha = '' ");
-			// stmt.setInt(1, ano);
+			stmt = conn.prepareStatement("Select i38numseq,i38anoref,d38dataexec from cir38 where c38encaminha = '' and i38anoref = ?");
+			stmt.setInt(1, ano);
 			rs = stmt.executeQuery();
+			
 			while (rs.next()) {
 				e = new Cirurgia();
 				e.setNumCirurgia(rs.getInt("i38numseq"));

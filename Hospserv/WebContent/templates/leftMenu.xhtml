@@ -9,8 +9,8 @@
 
 	<ul class="sidebar-menu" id="nav-accordion">
 		<p class="centered">
-			<a href="#"><h:graphicImage library="img" name="logo_hspm.gif"
-					class="img-circle" width="60" /></a>
+			<a href="#"><h:graphicImage library="img" name="logo_hspm.jpg"
+					class="img-retangle" width="160" /></a>
 		</p>
 		<h5 class="centered">Bem vindo</h5>
 		<h5 class="centered">#{request.remoteUser}</h5>
@@ -35,11 +35,13 @@
 						class="scroll" /></li>
 						
 						
-						<li><h:link value="Numero Anestesia" class="scroll" outcome="/publico/centrocirurgico/anestesia.xhtml" /></li>
+						<li><h:link value="Quantidade de Anestesias" class="scroll" outcome="/publico/centrocirurgico/anestesia.xhtml" /></li>
+						<li><h:link value="Cirurgias por Profissional" class="scroll" outcome="/publico/centrocirurgico/relatorio-anestesia.xhtml" /></li>
+						
 						
 			</ul></li>
 		<li class="sub-menu"><a href="javascript:;"> <i
-				class="fa fa-bug"></i> <span>Inconcistências</span>
+				class="fa fa-bug"></i> <span>Inconsistências</span>
 		</a>
 			<ul class="sub">
 				<li><h:link value="C Hora Início >= Fim C"

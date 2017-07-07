@@ -84,7 +84,7 @@ public class CirurgiaBean implements Serializable {
 	}
 
 	public void popularListarCampoEncaminhaVazio(){
-		setListarCampoEncaminhaVazio(new CirurgiaDAOOpenbase().listarCampoEncaminhaVazio());
+		setListarCampoEncaminhaVazio(new CirurgiaDAOOpenbase().listarCampoEncaminhaVazio(ano));
 	}	
 	
 

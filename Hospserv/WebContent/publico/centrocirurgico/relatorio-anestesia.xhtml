@@ -1,13 +1,13 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:p="http://primefaces.org/ui">
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
 
-<ui:composition template="/templates/principal.xhtml">
+	<ui:composition template="/templates/principal.xhtml">
 	<ui:define name="corpo">
-		<h:form id="qtdAnestesias">
+		<h:form id="relatorio3">
 			<h:panelGrid columns="2">
 
 
@@ -16,17 +16,13 @@
 				<p:inputMask id="ano" mask="9999" value="#{anestesiaBean.ano}" />
 
 				<p:outputLabel />
-
-
-
-
 				<p:commandButton id="pesqBtn" value="Pesquisar"
-					action="#{anestesiaBean.popularListarQuantidadeAnestesia()}"
+					action="#{anestesiaBean.popularRelatorioNumero3()}"
 					update="@form" />
 			</h:panelGrid>
 
 
-			<p:blockUI block="qtdAnestesias" trigger="pesqBtn">
+			<p:blockUI block="relatorio3" trigger="pesqBtn">
 				Carregando...
 				<br />
 				<p:graphicImage value="/resources/img/ajax-loader.gif" />
@@ -42,11 +38,11 @@
 			</h:commandLink>
 
 			<p:dataTable id="dt" var="anestesia"
-				value="#{anestesiaBean.listarQuantidadeAnestesia}"
+				value="#{anestesiaBean.relatorioNumero3}"
 				emptyMessage="Nenhum Registro Encontrado" scrollable="true"
 				scrollHeight="300">
 				<f:facet name="header">
-        			Quantidade de Anestesias por Tipo
+        			Quantidade de Cirurgias por Profissional
         			
         			<p:commandButton id="toggler" type="button" value="Colunas"
 						icon="ui-icon-calculator" />
@@ -54,8 +50,8 @@
 
 				</f:facet>
 
-				<p:column headerText="NOME DA ANESTESIA" style="text-align: left; width:85px;">
-					<h:outputText value="#{anestesia.descAnestesia}" />
+				<p:column headerText="PROFISSIONAL" style="text-align: left; width:270px;">
+					<h:outputText value="#{anestesia.nomeProfissional}" />
 				</p:column>
 
 				
@@ -95,11 +91,11 @@
 				<p:column headerText="DEZ" style="text-align: center; width:50px">
 					<h:outputText value="#{anestesia.qtdDez}" />
 				</p:column>
-				<p:column headerText="TOTAL" style="text-align: center; width:70px">
+				<p:column headerText="TOTAL" style="text-align: center; width:60px">
 					<h:outputText value="#{anestesia.total}" />
 				</p:column>
 				<f:facet name="footer">
-        			Total de registros #{anestesiaBean.listarQuantidadeAnestesia.size()} 
+        			Total de registros #{anestesiaBean.relatorioNumero3.size()} 
     			</f:facet>
 
 			</p:dataTable>
@@ -111,5 +107,6 @@
 
 
 	</ui:define>
-</ui:composition>
+	
+	</ui:composition>
 </html>

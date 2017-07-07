@@ -46,132 +46,313 @@ public class AnestesiaDAOOpenbase implements AnestesiaDAO {
 
 	@Override
 	public List<Anestesia> listarQuantidadeAnestesia(Integer ano) {
-		String codAnestesia = "";
+	
 		List<Anestesia> lista = new ArrayList<Anestesia>();
 		String[] meses = { "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12" };
+		String[] nomeAnestesia = { "Combinada", "Geral", "Local", "Peridural", "Raquidiana", "Sedação" };
 		String[] tipoCodAnestesia = { "codAnestesia1", "codAnestesia2" };
-		Connection conn1 = new ConexaoOpenbase().getConnection();
-		ResultSet rs1 = null;
-		PreparedStatement stmt1 = null;
+
 		String sql = "";
-		String sql1 = "select c30codanest,c30nomeanest from cir30";
-		String sql2 = "select count(*) as qtd1 from cir38 where c38codanest1 = ? and   d38dataexec >= ? and d38dataexec <= ? group by c38codanest1";
-		String sql3 = "select count(*) as qtd1 from cir38 where c38codanest2 = ? and   d38dataexec >= ? and d38dataexec <= ? group by c38codanest2";
+
+		String sqlCombinada1 = "select count(*) as qtd1 from cir38 where (c38codanest1 = '07' or  c38codanest1 = '03' or c38codanest1 = '04')  and   d38dataexec >= ? and d38dataexec <= ? ";
+		String sqlGeral1 = "select count(*) as qtd1 from cir38 where (c38codanest1 = '02' or  c38codanest1 = '01')  and   d38dataexec >= ? and d38dataexec <= ? ";
+		String sqlLocal1 = "select count(*) as qtd1 from cir38 where (c38codanest1 = '12' or  c38codanest1 = '13' or c38codanest1 = '15' or c38codanest1 = '16' or  c38codanest1 = '14' or c38codanest1 = '06' or c38codanest1 = '10' or c38codanest1 = '17' or  c38codanest1 = '18')  and   d38dataexec >= ? and d38dataexec <= ? ";
+		String sqlPeridural1 = "select count(*) as qtd1 from cir38 where (c38codanest1 = '09') and d38dataexec >= ? and d38dataexec <= ? ";
+		String sqlRaquidiana1 = "select count(*) as qtd1 from cir38 where (c38codanest1 = '08') and d38dataexec >= ? and d38dataexec <= ? ";
+		String sqlSedacao1 = "select count(*) as qtd1 from cir38 where (c38codanest1 = '05')  and   d38dataexec >= ? and d38dataexec <= ? ";
+		String sqlCombinada2 = "select count(*) as qtd1 from cir38 where (c38codanest2 = '07' or  c38codanest2 = '03' or c38codanest2 = '04') and   d38dataexec >= ? and d38dataexec <= ? ";
+		String sqlGeral2 = "select count(*) as qtd1 from cir38 where (c38codanest2 = '02' or  c38codanest2 = '01') and   d38dataexec >= ? and d38dataexec <= ? ";
+		String sqlLocal2 = "select count(*) as qtd1 from cir38 where (c38codanest2 = '12' or  c38codanest2 = '13' or c38codanest2 = '15' or c38codanest2 = '16' or  c38codanest2 = '14' or c38codanest2 = '06' or c38codanest2 = '10' or c38codanest2 = '17' or  c38codanest2 = '18') and   d38dataexec >= ? and d38dataexec <= ? ";
+		String sqlPeridural2 = "select count(*) as qtd1 from cir38 where  (c38codanest2 = '09') and   d38dataexec >= ? and d38dataexec <= ? ";
+		String sqlRaquidiana2 = "select count(*) as qtd1 from cir38 where  (c38codanest2 = '08') and   d38dataexec >= ? and d38dataexec <= ? ";
+		String sqlSedacao2 = "select count(*) as qtd1 from cir38 where  (c38codanest2 = '05') and   d38dataexec >= ? and d38dataexec <= ? ";
+
 		Anestesia p;
-		try {
-			stmt1 = conn1.prepareStatement(sql1);
 
-			rs1 = stmt1.executeQuery();
-			while (rs1.next()) {
-				p = new Anestesia();
+		for (String nomeAnest : nomeAnestesia) {
+			p = new Anestesia();
 
-				p.setCodAnestesia(rs1.getString("c30codanest"));
+			p.setDescAnestesia(nomeAnest);
+			
+			for (String tipoCodigoAnestesia : tipoCodAnestesia) {
+				if (tipoCodigoAnestesia == "codAnestesia1") {
+					if (nomeAnest == "Combinada") {
+						sql = sqlCombinada1;
+					} else if (nomeAnest == "Geral") {
 
-				p.setDescAnestesia(rs1.getString("c30nomeanest"));
-				codAnestesia = p.getCodAnestesia();
-				for (String tipoCodigoAnestesia : tipoCodAnestesia) {
-					if (tipoCodigoAnestesia == "codAnestesia1")
-						sql = sql2;
-					else
-						sql = sql3;
-					for (String mes : meses) {
-						String dtInicio = "";
-						String dtFim = "";
-						dtInicio = ano.toString() + mes + "01";
-						dtFim = ano.toString() + mes + "31";
-						Connection conn = new ConexaoOpenbase().getConnection();
-						ResultSet rs = null;
-						PreparedStatement stmt = null;
+						sql = sqlGeral1;
+					} else if (nomeAnest == "Local") {
 
-						try {
-							stmt = conn.prepareStatement(sql);
-							stmt.setString(1, codAnestesia);
-							stmt.setString(2, dtInicio);
-							stmt.setString(3, dtFim);
-							rs = stmt.executeQuery();
-							while (rs != null && rs.next() ) {
+						sql = sqlLocal1;
+					} else if (nomeAnest == "Peridural") {
 
-								if (mes == "01") {
-									p.setQtdJan(rs.getInt("qtd1"));
+						sql = sqlPeridural1;
+					} else if (nomeAnest == "Raquidiana") {
 
-									
-								} else if (mes == "02") {
+						sql = sqlRaquidiana1;
+					} else if (nomeAnest == "Sedação") {
 
-									p.setQtdFev(rs.getInt("qtd1"));
-								} else if (mes == "03") {
+						sql = sqlSedacao1;
+					}
+				} else {
+					if (nomeAnest == "Combinada") {
+						sql = sqlCombinada2;
+					} else if (nomeAnest == "Geral") {
 
-									p.setQtdMar(rs.getInt("qtd1"));
-								} else if (mes == "04") {
+						sql = sqlGeral2;
+					} else if (nomeAnest == "Local") {
 
-									p.setQtdAbr(rs.getInt("qtd1"));
-								} else if (mes == "05") {
-									
-										
-									p.setQtdMai( rs.getInt("qtd1"));
-								} else if (mes == "06") {
-									
-									p.setQtdJun(rs.getInt("qtd1"));
-								} else if (mes == "07") {
+						sql = sqlLocal2;
+					} else if (nomeAnest == "Peridural") {
 
-									p.setQtdJul(rs.getInt("qtd1"));
-								} else if (mes == "08") {
+						sql = sqlPeridural2;
+					} else if (nomeAnest == "Raquidiana") {
 
-									p.setQtdAgo(rs.getInt("qtd1"));
-								} else if (mes == "09") {
+						sql = sqlRaquidiana2;
+					} else if (nomeAnest == "Sedação") {
 
-									p.setQtdSet(rs.getInt("qtd1"));
-								} else if (mes == "10") {
+						sql = sqlSedacao2;
+					}
+				}
+				for (String mes : meses) {
+					String dtInicio = "";
+					String dtFim = "";
+					dtInicio = ano.toString() + mes + "01";
+					dtFim = ano.toString() + mes + "31";
+					Connection conn = new ConexaoOpenbase().getConnection();
+					ResultSet rs = null;
+					PreparedStatement stmt = null;
 
-									p.setQtdOut(rs.getInt("qtd1"));
-								} else if (mes == "11") {
+					try {
+						stmt = conn.prepareStatement(sql);
+						stmt.setString(1, dtInicio);
+						stmt.setString(2, dtFim);
+						rs = stmt.executeQuery();
+						while (rs != null && rs.next()) {
 
-									p.setQtdNov(rs.getInt("qtd1"));
-								} else if (mes == "12") {
+							if (mes == "01") {
+								p.setQtdJan(rs.getInt("qtd1"));
 
-									p.setQtdDez(rs.getInt("qtd1"));
-								}
+							} else if (mes == "02") {
 
+								p.setQtdFev(rs.getInt("qtd1"));
+							} else if (mes == "03") {
+
+								p.setQtdMar(rs.getInt("qtd1"));
+							} else if (mes == "04") {
+
+								p.setQtdAbr(rs.getInt("qtd1"));
+							} else if (mes == "05") {
+
+								p.setQtdMai(rs.getInt("qtd1"));
+							} else if (mes == "06") {
+
+								p.setQtdJun(rs.getInt("qtd1"));
+							} else if (mes == "07") {
+
+								p.setQtdJul(rs.getInt("qtd1"));
+							} else if (mes == "08") {
+
+								p.setQtdAgo(rs.getInt("qtd1"));
+							} else if (mes == "09") {
+
+								p.setQtdSet(rs.getInt("qtd1"));
+							} else if (mes == "10") {
+
+								p.setQtdOut(rs.getInt("qtd1"));
+							} else if (mes == "11") {
+
+								p.setQtdNov(rs.getInt("qtd1"));
+							} else if (mes == "12") {
+
+								p.setQtdDez(rs.getInt("qtd1"));
 							}
 
-						} catch (Exception e) {
-							System.out.println("Erro ao listar anestesia. Mensagem: " + e.getMessage());
-						} finally {
-							try {
-								stmt.close();
-								conn.close();
-							} catch (Throwable ex) {
-								System.out.println("Erro ao fechar operações de busca. Mensagem: " + ex.getMessage());
+						}
+
+					} catch (Exception e) {
+						System.out.println("Erro ao listar anestesia. Mensagem: " + e.getMessage());
+					} finally {
+						try {
+							stmt.close();
+							conn.close();
+						} catch (Throwable ex) {
+							System.out.println("Erro ao fechar operações de busca. Mensagem: " + ex.getMessage());
+						}
+					}
+
+				}
+			}
+			Integer jan = p.getQtdJan();
+			Integer fev = p.getQtdFev();
+			Integer mar = p.getQtdMar();
+			Integer abr = p.getQtdAbr();
+			Integer mai = p.getQtdMai();
+			Integer jun = p.getQtdJun();
+			Integer jul = p.getQtdJul();
+			Integer ago = p.getQtdAgo();
+			Integer set = p.getQtdSet();
+			Integer out = p.getQtdOut();
+			Integer nov = p.getQtdNov();
+			Integer dez = p.getQtdDez();
+
+			Integer total = jan + fev + mar + abr + +mai + jun + jul + ago + set + out + nov + dez;
+			p.setTotal(total);
+			lista.add(p);
+			p = null;
+			total = 0;
+		}
+
+		return lista;
+
+	}
+
+	public List<Anestesia> relatorioNumero3(Integer ano) {
+
+		List<Anestesia> lista = new ArrayList<Anestesia>();
+		String[] meses = { "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "TOTAL"};
+		String sql = "select i40cpfmed from cir40 where c40codatu ='02'and d40dataexec >= ? and d40dataexec <= ? group by i40cpfmed";
+		String sql1 = "select ic0nome from intc0 where ic0cpf = ?";
+		String sql2 = "select count(*) as qtd1 from cir40 where c40codatu ='02' and i40cpfmed = ? and d40dataexec >= ? and d40dataexec <= ?  group by i40cpfmed";
+
+		Connection conn = new ConexaoOpenbase().getConnection();
+		ResultSet rs = null;
+		PreparedStatement stmt = null;
+
+		Anestesia p;
+		String dtInicioTotal = "";
+		String dtFimTotal = "";
+		dtInicioTotal = ano.toString() + "0101";
+		dtFimTotal = ano.toString() + "1231";
+		try {
+			stmt = conn.prepareStatement(sql);
+			stmt.setString(1, dtInicioTotal);
+			stmt.setString(2, dtFimTotal);
+			rs = stmt.executeQuery();
+			while (rs.next()) {
+				String cpf = "";
+				p = new Anestesia();
+
+				p.setCpfProfissional(rs.getLong("i40cpfmed"));
+
+				Connection conn1 = new ConexaoOpenbase().getConnection();
+				ResultSet rs1 = null;
+				PreparedStatement stmt1 = null;
+				try {
+					cpf = p.getCpfProfissional().toString();
+					stmt1 = conn1.prepareStatement(sql1);
+					stmt1.setString(1, cpf);
+					rs1 = stmt1.executeQuery();
+					if (rs1.next()) {
+
+						p.setNomeProfissional(rs1.getString("ic0nome"));
+					}
+
+				}
+
+				catch (Exception e) {
+					System.out.println("Erro ao listar o relatório. Mensagem: " + e.getMessage());
+				} finally {
+					try {
+						stmt1.close();
+						conn1.close();
+					} catch (Throwable ex) {
+						System.out.println(
+								"Erro ao fechar operações de busca neste relatório. Mensagem: " + ex.getMessage());
+					}
+				}
+
+				for (String mes : meses) {
+					String dtInicio = "";
+					String dtFim = "";
+
+					if (mes == "TOTAL") {
+						dtInicio = ano.toString() + "01" + "01";
+						dtFim = ano.toString() + "12" + "31";
+					} else {
+						dtInicio = ano.toString() + mes + "01";
+						dtFim = ano.toString() + mes + "31";
+					}
+
+					Connection conn2 = new ConexaoOpenbase().getConnection();
+					ResultSet rs2 = null;
+					PreparedStatement stmt2 = null;
+
+					try {
+						stmt2 = conn2.prepareStatement(sql2);
+						stmt2.setString(1, cpf);
+						stmt2.setString(2, dtInicio);
+						stmt2.setString(3, dtFim);
+						rs2 = stmt2.executeQuery();
+						while (rs2 != null && rs2.next()) {
+
+							if (mes == "01") {
+								p.setQtdJan(rs2.getInt("qtd1"));
+
+							} else if (mes == "02") {
+
+								p.setQtdFev(rs2.getInt("qtd1"));
+							} else if (mes == "03") {
+
+								p.setQtdMar(rs2.getInt("qtd1"));
+							} else if (mes == "04") {
+
+								p.setQtdAbr(rs2.getInt("qtd1"));
+							} else if (mes == "05") {
+
+								p.setQtdMai(rs2.getInt("qtd1"));
+							} else if (mes == "06") {
+
+								p.setQtdJun(rs2.getInt("qtd1"));
+							} else if (mes == "07") {
+
+								p.setQtdJul(rs2.getInt("qtd1"));
+							} else if (mes == "08") {
+
+								p.setQtdAgo(rs2.getInt("qtd1"));
+							} else if (mes == "09") {
+
+								p.setQtdSet(rs2.getInt("qtd1"));
+							} else if (mes == "10") {
+
+								p.setQtdOut(rs2.getInt("qtd1"));
+							} else if (mes == "11") {
+
+								p.setQtdNov(rs2.getInt("qtd1"));
+							} else if (mes == "12") {
+
+								p.setQtdDez(rs2.getInt("qtd1"));
+							} else if (mes == "TOTAL") {
+
+								p.setTotal(rs2.getInt("qtd1"));
 							}
 						}
 
+					} catch (Exception e) {
+						System.out.println("Erro aaao listar o relatório. Mensagem: " + e.getMessage());
+					} finally {
+						try {
+							stmt2.close();
+							conn2.close();
+						} catch (Throwable ex) {
+							System.out.println("Erro ao fechar operações dede busca neste relatório. Mensagem: "
+									+ ex.getMessage());
+						}
 					}
-				}
-				Integer jan = p.getQtdJan();
-				Integer fev = p.getQtdFev();
-				Integer mar = p.getQtdMar();
-				Integer abr = p.getQtdAbr();
-				Integer mai = p.getQtdMai();
-				Integer jun = p.getQtdJun();
-				Integer jul = p.getQtdJul();
-				Integer ago = p.getQtdAgo();
-				Integer set = p.getQtdSet();
-				Integer out = p.getQtdOut();
-				Integer nov = p.getQtdNov();
-				Integer dez = p.getQtdDez();
 
-				Integer total = jan + fev + mar + abr + + mai + jun + jul + ago + set + out + nov + dez;
-				p.setTotal(total);
+				}
+
 				lista.add(p);
 				p = null;
-				total = 0;
+
 			}
 
 		} catch (Exception e) {
-			System.out.println("Erro ao listar anestesia. Mensagem: " + e.getMessage());
+			System.out.println("Erro ao listar anestesiaaa. Mensagem: " + e.getMessage());
 		} finally {
 			try {
-				stmt1.close();
-				conn1.close();
+				stmt.close();
+				conn.close();
 			} catch (Throwable ex) {
 				System.out.println("Erro ao fechar operações de busca. Mensagem: " + ex.getMessage());
 			}
@@ -180,4 +361,5 @@ public class AnestesiaDAOOpenbase implements AnestesiaDAO {
 		return lista;
 
 	}
+
 }
