@@ -44,9 +44,25 @@ public class Anestesia {
 	private String hrsDez ;
 	private String hrsTotal ;
 	
+	private Integer anoReferencia;
+	private Integer codCirurgia;
+	
 
 	
 	
+
+public Integer getAnoReferencia() {
+		return anoReferencia;
+	}
+	public void setAnoReferencia(Integer anoReferencia) {
+		this.anoReferencia = anoReferencia;
+	}
+	public Integer getCodCirurgia() {
+		return codCirurgia;
+	}
+	public void setCodCirurgia(Integer codCirurgia) {
+		this.codCirurgia = codCirurgia;
+	}
 public String getNomeProfissional() {
 		return nomeProfissional;
 	}
@@ -151,19 +167,21 @@ public Anestesia(){
 	this.qtdNov =0;
 	this.qtdDez =0;
 	this.total =0;
-	this.hrsJan ="0" ;
-	this.hrsFev ="0";
-	this.hrsMar ="0";
-	this.hrsAbr ="0";
-	this.hrsMai ="0";
-	this.hrsJun ="0";
-	this.hrsJul ="0";
-	this.hrsAgo ="0";
-	this.hrsSet ="0";
-	this.hrsOut ="0";
-	this.hrsNov ="0";
-	this.hrsDez ="0";
-	this.hrsTotal ="0";
+	this.hrsJan ="00:00" ;
+	this.hrsFev ="00:00";
+	this.hrsMar ="00:00";
+	this.hrsAbr ="00:00";
+	this.hrsMai ="00:00";
+	this.hrsJun ="00:00";
+	this.hrsJul ="00:00";
+	this.hrsAgo ="00:00";
+	this.hrsSet ="00:00";
+	this.hrsOut ="00:00";
+	this.hrsNov ="00:00";
+	this.hrsDez ="00:00";
+	this.hrsTotal ="00:00";
+	this.anoReferencia =0;
+	this.codCirurgia =0;
 }
 	public Integer getTotal() {
 		return total;

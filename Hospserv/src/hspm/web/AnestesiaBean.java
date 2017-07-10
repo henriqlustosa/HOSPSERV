@@ -32,9 +32,21 @@ public class AnestesiaBean implements Serializable {
 	
 	private List<Anestesia> listarQuantidadeAnestesia;
 	private  List<Anestesia> relatorioNumero3;
+	private  List<Anestesia> relatorioNumero4;
 	
+	public List<Anestesia> getRelatorioNumero4() {
+		return relatorioNumero4;
+	}
+
+	public void setRelatorioNumero4(List<Anestesia> relatorioNumero4) {
+		this.relatorioNumero4 = relatorioNumero4;
+	}
+
 	public void popularRelatorioNumero3(){
 		setRelatorioNumero3(new AnestesiaDAOOpenbase().relatorioNumero3(ano));
+	}
+	public void popularRelatorioNumero4(){
+		setRelatorioNumero4(new AnestesiaDAOOpenbase().relatorioNumero4(ano));
 	}
 	
 	public List<Anestesia> getRelatorioNumero3() {
