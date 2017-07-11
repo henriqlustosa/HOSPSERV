@@ -137,7 +137,7 @@ public class FormataDataHora {
 		Integer minSoma = (hrJan * 60) + (hrFev * 60) +(hrMar * 60) +(hrAbr * 60) +(hrMai * 60) +(hrJun * 60) +(hrJul * 60) +(hrAgo * 60) +(hrSet * 60) +(hrOut * 60) +(hrNov * 60) +(hrDez * 60) + minJan + minFev + minMar + minAbr + minMai + minJun + minJul + minAgo + minSet + minOut + minNov + minDez;
 		Integer hrTotal= minSoma/60;
 		Integer minTotal= minSoma%60;
-		horaSomada = hrTotal + ":" + minTotal;
+		horaSomada = hrTotal + ":" +  String.format("%02d",minTotal);
 	
 		return horaSomada;
 	}

@@ -370,6 +370,7 @@ public class AnestesiaDAOOpenbase implements AnestesiaDAO {
 		String dtFim = "";
 
 		List<Anestesia> lista = new ArrayList<Anestesia>();
+		List<Long> cpfProfissional = new ArrayList<Long>();
 		String[] meses = { "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12" };
 		String sql = "select i40cpfmed from cir40 where c40codatu ='02'and d40dataexec >= ? and d40dataexec <= ? group by i40cpfmed";
 		String sql1 = "select ic0nome from intc0 where ic0cpf = ?";
@@ -391,18 +392,36 @@ public class AnestesiaDAOOpenbase implements AnestesiaDAO {
 			stmt.setString(2, dtFimTotal);
 			rs = stmt.executeQuery();
 			while (rs.next()) {
-				String cpf = "";
+				cpfProfissional.add(rs.getLong("i40cpfmed"));
+			}
+		}
+		catch (Exception e) {
+			System.out.println("Erro ao listar anestesiaaa. Mensagem: " + e.getMessage());
+		} finally {
+			try {
+				stmt.close();
+				conn.close();
+			} catch (Throwable ex) {
+				System.out.println("Erro ao fechar operações de busca. Mensagem: " + ex.getMessage());
+			}
+		}
+		for(Long cpf : cpfProfissional)
+		{
+			String strCpf = "";
+				
 				p = new Anestesia();
+				
 
-				p.setCpfProfissional(rs.getLong("i40cpfmed"));
+				p.setCpfProfissional(cpf);
+				strCpf = cpf.toString();
 
 				Connection conn1 = new ConexaoOpenbase().getConnection();
 				ResultSet rs1 = null;
 				PreparedStatement stmt1 = null;
 				try {
-					cpf = p.getCpfProfissional().toString();
+					
 					stmt1 = conn1.prepareStatement(sql1);
-					stmt1.setString(1, cpf);
+					stmt1.setString(1, strCpf);
 					rs1 = stmt1.executeQuery();
 					if (rs1.next()) {
 
@@ -419,7 +438,7 @@ public class AnestesiaDAOOpenbase implements AnestesiaDAO {
 						conn1.close();
 					} catch (Throwable ex) {
 						System.out.println(
-								"Erro ao fechar operações de busca neste relatório . Mensagemmmmr: " + ex.getMessage());
+								"Erro ao fechar operações de busca neste relatório . Mensagem: " + ex.getMessage());
 					}
 				}
 
@@ -434,7 +453,7 @@ public class AnestesiaDAOOpenbase implements AnestesiaDAO {
 
 					try {
 						stmt2 = conn2.prepareStatement(sql2);
-						stmt2.setString(1, cpf);
+						stmt2.setString(1, strCpf);
 						stmt2.setString(2, dtInicio);
 						stmt2.setString(3, dtFim);
 						
@@ -542,16 +561,7 @@ public class AnestesiaDAOOpenbase implements AnestesiaDAO {
 				lista.add(p);
 				p = null;
 			}
-		} catch (Exception e) {
-			System.out.println("Erro ao listar anestesiaaa. Mensagem: " + e.getMessage());
-		} finally {
-			try {
-				stmt.close();
-				conn.close();
-			} catch (Throwable ex) {
-				System.out.println("Erro ao fechar operações de busca. Mensagem: " + ex.getMessage());
-			}
-		}
+		 
 		Comparator<Anestesia> c = (s1, s2) -> s1.getNomeProfissional().compareTo(s2.getNomeProfissional());
 		lista.sort(c);
 		return lista;
