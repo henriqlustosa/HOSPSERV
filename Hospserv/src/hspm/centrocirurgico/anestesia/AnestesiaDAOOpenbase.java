@@ -94,9 +94,7 @@ public class AnestesiaDAOOpenbase implements AnestesiaDAO {
 					} else if (nomeAnest == "Sedação") {
 
 						sql = sqlSedacao1;
-					}
-				} else {
-					if (nomeAnest == "Combinada") {
+					} else if (nomeAnest == "Combinada") {
 						sql = sqlCombinada2;
 					} else if (nomeAnest == "Geral") {
 
@@ -394,8 +392,7 @@ public class AnestesiaDAOOpenbase implements AnestesiaDAO {
 			while (rs.next()) {
 				cpfProfissional.add(rs.getLong("i40cpfmed"));
 			}
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			System.out.println("Erro ao listar anestesiaaa. Mensagem: " + e.getMessage());
 		} finally {
 			try {
@@ -405,163 +402,184 @@ public class AnestesiaDAOOpenbase implements AnestesiaDAO {
 				System.out.println("Erro ao fechar operações de busca. Mensagem: " + ex.getMessage());
 			}
 		}
-		for(Long cpf : cpfProfissional)
-		{
+		for (Long cpf : cpfProfissional) {
 			String strCpf = "";
-				
-				p = new Anestesia();
-				
 
-				p.setCpfProfissional(cpf);
-				strCpf = cpf.toString();
+			p = new Anestesia();
 
-				Connection conn1 = new ConexaoOpenbase().getConnection();
-				ResultSet rs1 = null;
-				PreparedStatement stmt1 = null;
+			p.setCpfProfissional(cpf);
+			strCpf = cpf.toString();
+
+			Connection conn1 = new ConexaoOpenbase().getConnection();
+			ResultSet rs1 = null;
+			PreparedStatement stmt1 = null;
+			try {
+
+				stmt1 = conn1.prepareStatement(sql1);
+				stmt1.setString(1, strCpf);
+				rs1 = stmt1.executeQuery();
+				if (rs1.next()) {
+
+					p.setNomeProfissional(rs1.getString("ic0nome"));
+				}
+
+			}
+
+			catch (Exception e) {
+				System.out.println("Erro ao listarr o relatório. Mensagem: " + e.getMessage());
+			} finally {
 				try {
-					
-					stmt1 = conn1.prepareStatement(sql1);
-					stmt1.setString(1, strCpf);
-					rs1 = stmt1.executeQuery();
-					if (rs1.next()) {
-
-						p.setNomeProfissional(rs1.getString("ic0nome"));
-					}
-
+					stmt1.close();
+					conn1.close();
+				} catch (Throwable ex) {
+					System.out.println(
+							"Erro ao fechar operações de busca neste relatório . Mensagem: " + ex.getMessage());
 				}
+			}
 
-				catch (Exception e) {
-					System.out.println("Erro ao listarr o relatório. Mensagem: " + e.getMessage());
-				} finally {
-					try {
-						stmt1.close();
-						conn1.close();
-					} catch (Throwable ex) {
-						System.out.println(
-								"Erro ao fechar operações de busca neste relatório . Mensagem: " + ex.getMessage());
-					}
-				}
+			for (String mes : meses) {
 
-				for (String mes : meses) {
-				
+				Connection conn2 = new ConexaoOpenbase().getConnection();
+				ResultSet rs2 = null;
+				PreparedStatement stmt2 = null;
+				dtInicio = ano.toString() + mes + "01";
+				dtFim = ano.toString() + mes + "31";
 
-					Connection conn2 = new ConexaoOpenbase().getConnection();
-					ResultSet rs2 = null;
-					PreparedStatement stmt2 = null;
-					dtInicio= ano.toString() + mes + "01";
-					dtFim = ano.toString() + mes + "31";
+				try {
+					stmt2 = conn2.prepareStatement(sql2);
+					stmt2.setString(1, strCpf);
+					stmt2.setString(2, dtInicio);
+					stmt2.setString(3, dtFim);
 
-					try {
-						stmt2 = conn2.prepareStatement(sql2);
-						stmt2.setString(1, strCpf);
-						stmt2.setString(2, dtInicio);
-						stmt2.setString(3, dtFim);
-						
-						rs2 = stmt2.executeQuery();
-						while (rs2 != null && rs2.next()) {
-							p.setCodCirurgia(rs2.getInt("i40numseq"));
-							p.setAnoReferencia(rs2.getInt("i40anoref")); 
-							Integer codCirurgia = p.getCodCirurgia();
-							Integer anoReferencia =p.getAnoReferencia(); 
-							Connection conn3 = new ConexaoOpenbase().getConnection();
-							ResultSet rs3 = null;
-							PreparedStatement stmt3 = null;
+					rs2 = stmt2.executeQuery();
+					while (rs2 != null && rs2.next()) {
+						p.setCodCirurgia(rs2.getInt("i40numseq"));
+						p.setAnoReferencia(rs2.getInt("i40anoref"));
+						Integer codCirurgia = p.getCodCirurgia();
+						Integer anoReferencia = p.getAnoReferencia();
+						Connection conn3 = new ConexaoOpenbase().getConnection();
+						ResultSet rs3 = null;
+						PreparedStatement stmt3 = null;
 
-							try {
-								stmt3 = conn3.prepareStatement(sql3);
-								stmt3.setInt(1, codCirurgia);
-								stmt3.setInt(2, anoReferencia);
-								
-								rs3 = stmt3.executeQuery();
+						try {
+							stmt3 = conn3.prepareStatement(sql3);
+							stmt3.setInt(1, codCirurgia);
+							stmt3.setInt(2, anoReferencia);
 
-								while (rs3 != null && rs3.next()) {
+							rs3 = stmt3.executeQuery();
 
-									if (mes == "01") {
-										p.setHrsJan(FormataDataHora.calculaSomaTEmpo(p.getHrsJan(),FormataDataHora.calculaDiffHora(FormataDataHora.formataHora(rs3.getString("c38hinianest")),
-												FormataDataHora.formataHora(rs3.getString("c38hfimanest")))));
-										
+							while (rs3 != null && rs3.next()) {
 
-									} else if (mes == "02") {
+								if (mes == "01") {
+									p.setHrsJan(FormataDataHora.calculaSomaTEmpo(p.getHrsJan(),
+											FormataDataHora.calculaDiffHora(
+													FormataDataHora.formataHora(rs3.getString("c38hinianest")),
+													FormataDataHora.formataHora(rs3.getString("c38hfimanest")))));
 
-										p.setHrsFev(FormataDataHora.calculaSomaTEmpo(p.getHrsFev(),FormataDataHora.calculaDiffHora(FormataDataHora.formataHora(rs3.getString("c38hinianest")),
-												FormataDataHora.formataHora(rs3.getString("c38hfimanest")))));
-									} else if (mes == "03") {
+								} else if (mes == "02") {
 
-										p.setHrsMar(FormataDataHora.calculaSomaTEmpo(p.getHrsMar(),FormataDataHora.calculaDiffHora(FormataDataHora.formataHora(rs3.getString("c38hinianest")),
-												FormataDataHora.formataHora(rs3.getString("c38hfimanest")))));
-									} else if (mes == "04") {
+									p.setHrsFev(FormataDataHora.calculaSomaTEmpo(p.getHrsFev(),
+											FormataDataHora.calculaDiffHora(
+													FormataDataHora.formataHora(rs3.getString("c38hinianest")),
+													FormataDataHora.formataHora(rs3.getString("c38hfimanest")))));
+								} else if (mes == "03") {
 
-										p.setHrsAbr(FormataDataHora.calculaSomaTEmpo(p.getHrsAbr(),FormataDataHora.calculaDiffHora(FormataDataHora.formataHora(rs3.getString("c38hinianest")),
-												FormataDataHora.formataHora(rs3.getString("c38hfimanest")))));
-									} else if (mes == "05") {
+									p.setHrsMar(FormataDataHora.calculaSomaTEmpo(p.getHrsMar(),
+											FormataDataHora.calculaDiffHora(
+													FormataDataHora.formataHora(rs3.getString("c38hinianest")),
+													FormataDataHora.formataHora(rs3.getString("c38hfimanest")))));
+								} else if (mes == "04") {
 
-										p.setHrsMai(FormataDataHora.calculaSomaTEmpo(p.getHrsMai(),FormataDataHora.calculaDiffHora(FormataDataHora.formataHora(rs3.getString("c38hinianest")),
-												FormataDataHora.formataHora(rs3.getString("c38hfimanest")))));
-									} else if (mes == "06") {
+									p.setHrsAbr(FormataDataHora.calculaSomaTEmpo(p.getHrsAbr(),
+											FormataDataHora.calculaDiffHora(
+													FormataDataHora.formataHora(rs3.getString("c38hinianest")),
+													FormataDataHora.formataHora(rs3.getString("c38hfimanest")))));
+								} else if (mes == "05") {
 
-										p.setHrsJun(FormataDataHora.calculaSomaTEmpo(p.getHrsJun(),FormataDataHora.calculaDiffHora(FormataDataHora.formataHora(rs3.getString("c38hinianest")),
-												FormataDataHora.formataHora(rs3.getString("c38hfimanest")))));
-									} else if (mes == "07") {
+									p.setHrsMai(FormataDataHora.calculaSomaTEmpo(p.getHrsMai(),
+											FormataDataHora.calculaDiffHora(
+													FormataDataHora.formataHora(rs3.getString("c38hinianest")),
+													FormataDataHora.formataHora(rs3.getString("c38hfimanest")))));
+								} else if (mes == "06") {
 
-										p.setHrsJul(FormataDataHora.calculaSomaTEmpo(p.getHrsJul(),FormataDataHora.calculaDiffHora(FormataDataHora.formataHora(rs3.getString("c38hinianest")),
-												FormataDataHora.formataHora(rs3.getString("c38hfimanest")))));
-									} else if (mes == "08") {
+									p.setHrsJun(FormataDataHora.calculaSomaTEmpo(p.getHrsJun(),
+											FormataDataHora.calculaDiffHora(
+													FormataDataHora.formataHora(rs3.getString("c38hinianest")),
+													FormataDataHora.formataHora(rs3.getString("c38hfimanest")))));
+								} else if (mes == "07") {
 
-										p.setHrsAgo(FormataDataHora.calculaSomaTEmpo(p.getHrsAgo(),FormataDataHora.calculaDiffHora(FormataDataHora.formataHora(rs3.getString("c38hinianest")),
-												FormataDataHora.formataHora(rs3.getString("c38hfimanest")))));
-									} else if (mes == "09") {
+									p.setHrsJul(FormataDataHora.calculaSomaTEmpo(p.getHrsJul(),
+											FormataDataHora.calculaDiffHora(
+													FormataDataHora.formataHora(rs3.getString("c38hinianest")),
+													FormataDataHora.formataHora(rs3.getString("c38hfimanest")))));
+								} else if (mes == "08") {
 
-										p.setHrsSet(FormataDataHora.calculaSomaTEmpo(p.getHrsSet(),FormataDataHora.calculaDiffHora(FormataDataHora.formataHora(rs3.getString("c38hinianest")),
-												FormataDataHora.formataHora(rs3.getString("c38hfimanest")))));
-									} else if (mes == "10") {
+									p.setHrsAgo(FormataDataHora.calculaSomaTEmpo(p.getHrsAgo(),
+											FormataDataHora.calculaDiffHora(
+													FormataDataHora.formataHora(rs3.getString("c38hinianest")),
+													FormataDataHora.formataHora(rs3.getString("c38hfimanest")))));
+								} else if (mes == "09") {
 
-										p.setHrsOut(FormataDataHora.calculaSomaTEmpo(p.getHrsOut(),FormataDataHora.calculaDiffHora(FormataDataHora.formataHora(rs3.getString("c38hinianest")),
-												FormataDataHora.formataHora(rs3.getString("c38hfimanest")))));
-									} else if (mes == "11") {
+									p.setHrsSet(FormataDataHora.calculaSomaTEmpo(p.getHrsSet(),
+											FormataDataHora.calculaDiffHora(
+													FormataDataHora.formataHora(rs3.getString("c38hinianest")),
+													FormataDataHora.formataHora(rs3.getString("c38hfimanest")))));
+								} else if (mes == "10") {
 
-										p.setHrsNov(FormataDataHora.calculaSomaTEmpo(p.getHrsNov(),FormataDataHora.calculaDiffHora(FormataDataHora.formataHora(rs3.getString("c38hinianest")),
-												FormataDataHora.formataHora(rs3.getString("c38hfimanest")))));
-									} else if (mes == "12") {
+									p.setHrsOut(FormataDataHora.calculaSomaTEmpo(p.getHrsOut(),
+											FormataDataHora.calculaDiffHora(
+													FormataDataHora.formataHora(rs3.getString("c38hinianest")),
+													FormataDataHora.formataHora(rs3.getString("c38hfimanest")))));
+								} else if (mes == "11") {
 
-										p.setHrsDez(FormataDataHora.calculaSomaTEmpo(p.getHrsDez(),FormataDataHora.calculaDiffHora(FormataDataHora.formataHora(rs3.getString("c38hinianest")),
-												FormataDataHora.formataHora(rs3.getString("c38hfimanest")))));
-									} 
+									p.setHrsNov(FormataDataHora.calculaSomaTEmpo(p.getHrsNov(),
+											FormataDataHora.calculaDiffHora(
+													FormataDataHora.formataHora(rs3.getString("c38hinianest")),
+													FormataDataHora.formataHora(rs3.getString("c38hfimanest")))));
+								} else if (mes == "12") {
 
+									p.setHrsDez(FormataDataHora.calculaSomaTEmpo(p.getHrsDez(),
+											FormataDataHora.calculaDiffHora(
+													FormataDataHora.formataHora(rs3.getString("c38hinianest")),
+													FormataDataHora.formataHora(rs3.getString("c38hfimanest")))));
 								}
 
-							} catch (Exception e) {
-								System.out.println("Erro aaao listar o relatório. Mensagem: " + e.getMessage());
-							} finally {
-								try {
-									stmt3.close();
-									conn3.close();
-								} catch (Throwable ex) {
-									System.out.println("Erro ao fechar operações dede busca neste relatório. Mensagem: "
-											+ ex.getMessage());
-								}
 							}
 
+						} catch (Exception e) {
+							System.out.println("Erro aaao listar o relatório. Mensagem: " + e.getMessage());
+						} finally {
+							try {
+								stmt3.close();
+								conn3.close();
+							} catch (Throwable ex) {
+								System.out.println("Erro ao fechar operações dede busca neste relatório. Mensagem: "
+										+ ex.getMessage());
+							}
 						}
-                     
 
-					} catch (Exception e) {
-						System.out.println("Erro ao listar o relatório. Mensagem: " + e.getMessage());
-					} finally {
-						try {
-							stmt2.close();
-							conn2.close();
-						} catch (Throwable ex) {
-							System.out.println("Erro ao fechar operações dede busca neste relatório. Mensagem: "
-									+ ex.getMessage());
-						}
 					}
 
+				} catch (Exception e) {
+					System.out.println("Erro ao listar o relatório. Mensagem: " + e.getMessage());
+				} finally {
+					try {
+						stmt2.close();
+						conn2.close();
+					} catch (Throwable ex) {
+						System.out.println(
+								"Erro ao fechar operações dede busca neste relatório. Mensagem: " + ex.getMessage());
+					}
 				}
-				p.setHrsTotal(FormataDataHora.calculaSomaTotal(p.getHrsJan(), p.getHrsFev(), p.getHrsMar(), p.getHrsAbr(), p.getHrsMai(), p.getHrsJun(), p.getHrsJul(), p.getHrsAgo(), p.getHrsSet(), p.getHrsOut(), p.getHrsNov(), p.getHrsDez()));  
-				lista.add(p);
-				p = null;
+
 			}
-		 
+			p.setHrsTotal(FormataDataHora.calculaSomaTotal(p.getHrsJan(), p.getHrsFev(), p.getHrsMar(), p.getHrsAbr(),
+					p.getHrsMai(), p.getHrsJun(), p.getHrsJul(), p.getHrsAgo(), p.getHrsSet(), p.getHrsOut(),
+					p.getHrsNov(), p.getHrsDez()));
+			lista.add(p);
+			p = null;
+		}
+
 		Comparator<Anestesia> c = (s1, s2) -> s1.getNomeProfissional().compareTo(s2.getNomeProfissional());
 		lista.sort(c);
 		return lista;

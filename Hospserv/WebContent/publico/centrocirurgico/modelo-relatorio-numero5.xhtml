@@ -1,0 +1,113 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/templates/principal.xhtml">
+	<ui:define name="corpo">
+		<h1>Relatório Total e Duração dos procedimentos
+			Urgência/Emergência</h1>
+		<br />
+		<h:form id="relatorio5">
+			<h:panelGrid columns="2">
+
+
+
+				<p:outputLabel for="ano" value="Informe o Ano:" />
+				<p:inputMask id="ano" mask="9999" value="#{modeloRelatorioBean.ano}" />
+
+				<p:outputLabel />
+				<p:commandButton id="pesqBtn" value="Pesquisar"
+					action="#{modeloRelatorioBean.popularRelatorioNumero5()}"
+					update="@form" />
+			</h:panelGrid>
+
+
+			<p:blockUI block="relatorio5" trigger="pesqBtn">
+				Carregando...
+				<br />
+				<p:graphicImage value="/resources/img/ajax-loader.gif" />
+			</p:blockUI>
+			<hr />
+			<h:commandLink>
+				<p:graphicImage value="/resources/imagens/excel.png" width="24" />
+				<p:dataExporter type="xls" target="dt" fileName="porte" />
+			</h:commandLink>
+			<h:commandLink>
+				<p:graphicImage value="/resources/imagens/pdf.png" width="24" />
+				<p:dataExporter type="pdf" target="dt" fileName="porte" />
+			</h:commandLink>
+
+			<p:dataTable id="dt" var="modeloRelatorio"
+				value="#{modeloRelatorioBean.relatorioNumero5}"
+				emptyMessage="Nenhum Registro Encontrado" scrollable="true"
+				scrollHeight="300">
+				<f:facet name="header">
+        			Total e duração (em horas) dos Procedimentos Urgência/Emergênica-Centro Obstétrico
+        			
+        			
+					
+
+				</f:facet>
+
+				<p:columnGroup type="header">
+					<p:row>
+						<p:column rowspan="2" headerText="Mês" />
+						<p:column colspan="4" headerText="Total procedimentos" />
+						<p:column colspan="4" headerText="Duração dos procedimentos"/>
+					</p:row>
+					<p:row>	
+						<p:column headerText="7:00 - 18:59" />
+						<p:column headerText="19:00 - 23:59" />
+						<p:column headerText="00:00 - 6:59" />
+						<p:column headerText="Total" />
+						<p:column headerText="7:00 - 18:59" />
+						<p:column headerText="19:00 - 23:59" />
+						<p:column headerText="00:00 - 6:59" />
+						<p:column headerText="Total" />
+					</p:row>
+				</p:columnGroup>
+
+
+				<p:column>
+					<h:outputText value="#{modeloRelatorio.nomeMes}" />
+				</p:column>
+				<p:column>
+					<h:outputText value="#{modeloRelatorio.qtdMesProcDia}" />
+				</p:column>
+				<p:column>
+					<h:outputText value="#{modeloRelatorio.qtdMesProcNoite}" />
+				</p:column>
+				<p:column>
+					<h:outputText value="#{modeloRelatorio.qtdMesProcManha}" />
+				</p:column>
+				<p:column>
+					<h:outputText value="#{modeloRelatorio.qtdMesProcTotalLinha}" />
+				</p:column>
+				<p:column>
+					<h:outputText value="#{modeloRelatorio.tempoMesProcDia}" />
+				</p:column>
+				<p:column>
+					<h:outputText value="#{modeloRelatorio.tempolMesProcNoite}" />
+				</p:column>
+				<p:column>
+					<h:outputText value="#{modeloRelatorio.tempoMesProcManha}" />
+				</p:column>
+				<p:column>
+					<h:outputText value="#{modeloRelatorio.tempoMesProcTotalLinha}" />
+				</p:column>
+
+
+			</p:dataTable>
+
+
+
+		</h:form>
+
+
+
+	</ui:define>
+</ui:composition>
+</html>
