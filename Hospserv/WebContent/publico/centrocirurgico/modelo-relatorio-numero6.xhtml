@@ -1,16 +1,16 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:p="http://primefaces.org/ui">
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      	xmlns:p="http://primefaces.org/ui">
 
-<ui:composition template="/templates/principal.xhtml">
+	<ui:composition template="/templates/principal.xhtml">
 	<ui:define name="corpo">
-		<h1>Relatório: Total e Duração dos procedimentos
-			Urgência/Emergência do Centro Cirúrgico</h1>
+		<h1>Relatório: Total e Duração dos Procedimentos
+		 do Centro Obstétrico</h1>
 		<br />
-		<h:form id="relatorio5">
+		<h:form id="relatorio6">
 			<h:panelGrid columns="2">
 
 
@@ -20,12 +20,12 @@
 
 				<p:outputLabel />
 				<p:commandButton id="pesqBtn" value="Pesquisar"
-					action="#{modeloRelatorioBean.popularRelatorioNumero5()}"
+					action="#{modeloRelatorioBean.popularRelatorioNumero6()}"
 					update="@form" />
 			</h:panelGrid>
 
 
-			<p:blockUI block="relatorio5" trigger="pesqBtn">
+			<p:blockUI block="relatorio6" trigger="pesqBtn">
 				Carregando...
 				<br />
 				<p:graphicImage value="/resources/img/ajax-loader.gif" />
@@ -41,11 +41,11 @@
 			</h:commandLink>
 
 			<p:dataTable id="dt" var="modeloRelatorio"
-				value="#{modeloRelatorioBean.relatorioNumero5}"
+				value="#{modeloRelatorioBean.relatorioNumero6}"
 				emptyMessage="Nenhum Registro Encontrado" scrollable="true"
 				scrollHeight="300">
 				<f:facet name="header">
-        			Total e duração (em horas) dos Procedimentos Urgência/Emergênica, por Faixa de horário, segundo o mês - Centro Cirúrgico -Ano
+        			Total e duração (em horas) dos Procedimentos Realizados, por Faixa de horário, segundo o mês - Centro Obstétrico -Ano
         			
         			
 					
@@ -109,5 +109,5 @@
 
 
 	</ui:define>
-</ui:composition>
+	</ui:composition>
 </html>

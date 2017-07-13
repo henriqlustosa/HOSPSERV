@@ -11,6 +11,31 @@ import hspm.util.FormataDataHora;
 
 public class ModeloRelatorioDAOOpenbase {
 	public List<ModeloRelatorio> relatorioNumero5(Integer ano) {
+
+		String sql = "select c38hiniexec,c38hfimexec from cir38 where (c38codclin ='518' or c38codclin ='538' or c38codclin ='537' or c38codclin ='575')and c38hfimexec >= ? and c38hfimexec <= ? and d38dataexec >= ? and d38dataexec <= ? ";
+		return montarRelatorios(ano, sql);
+	}
+
+	public List<ModeloRelatorio> relatorioNumero7(Integer ano) {
+
+		String sql = "select c38hiniexec,c38hfimexec from cir38 where (c38codsala like '7%') and(c38codclin !='518' and c38codclin !='538' and c38codclin !='537' and c38codclin !='575')and c38hfimexec >= ? and c38hfimexec <= ? and d38dataexec >= ? and d38dataexec <= ? ";
+		return montarRelatorios(ano, sql);
+	}
+
+	public List<ModeloRelatorio> relatorioNumero8(Integer ano) {
+
+		String sql = "select c38hiniexec,c38hfimexec from cir38 where (c38codsala like '7%') and c38hfimexec >= ? and c38hfimexec <= ? and d38dataexec >= ? and d38dataexec <= ? ";
+		return montarRelatorios(ano, sql);
+	}
+
+	public List<ModeloRelatorio> relatorioNumero6(Integer ano) {
+
+		String sql = "select c38hiniexec,c38hfimexec from cir38 where (c38codsala like '8%') and c38hfimexec >= ? and c38hfimexec <= ? and d38dataexec >= ? and d38dataexec <= ? ";
+		return montarRelatorios(ano, sql);
+	}
+
+	public List<ModeloRelatorio> montarRelatorios(Integer ano, String sql) {
+
 		String dtInicio = "";
 		String dtFim = "";
 
@@ -21,12 +46,6 @@ public class ModeloRelatorioDAOOpenbase {
 		String[][] meses = { { "01", "JAN" }, { "02", "FEV" }, { "03", "MAR" }, { "04", "ABR" }, { "05", "MAI" },
 				{ "06", "JUN" }, { "07", "JUL" }, { "08", "AGO" }, { "09", "SET" }, { "10", "OUT" }, { "11", "NOV" },
 				{ "12", "DEZ" } };
-		// String sql = "select count(*) as qtd from cir38 where (c38codclin
-		// ='518' or c38codclin ='538' or c38codclin ='537' or c38codclin
-		// ='575')and c38hfimexec >= ? and c38hfimexec <= ? and d38dataexec >= ?
-		// and d38dataexec <= ? ";
-
-		String sql1 = "select c38hiniexec,c38hfimexec from cir38 where (c38codclin ='518' or c38codclin ='538' or c38codclin ='537' or c38codclin ='575')and c38hfimexec >= ? and c38hfimexec <= ? and d38dataexec >= ? and d38dataexec <= ? ";
 
 		ModeloRelatorio p;
 		ModeloRelatorio pTotal;
@@ -47,7 +66,7 @@ public class ModeloRelatorioDAOOpenbase {
 					dtInicio = ano.toString() + meses[i][0] + "01";
 					dtFim = ano.toString() + meses[i][0] + "31";
 
-					stmt1 = conn1.prepareStatement(sql1);
+					stmt1 = conn1.prepareStatement(sql);
 					stmt1.setString(1, horario[j][0]);
 					stmt1.setString(2, horario[j][1]);
 					stmt1.setString(3, dtInicio);
@@ -116,6 +135,7 @@ public class ModeloRelatorioDAOOpenbase {
 		lista.add(pTotal);
 		pTotal = null;
 		return lista;
+
 	}
 
 }
