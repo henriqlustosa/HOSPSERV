@@ -29,6 +29,8 @@ public class ModeloRelatorio {
 	private String tempoMesProcManha  ;
 	private String tempolMesProcNoite  ;
 	private String tempoMesProcTotalLinha ;
+
+	
 	
 	
 	public String getNomeMes() {
