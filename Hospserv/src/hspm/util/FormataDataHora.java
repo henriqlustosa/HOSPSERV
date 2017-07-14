@@ -27,14 +27,33 @@ public class FormataDataHora {
 	}
 
 	public static String formataHora(String h) {
-		String horaCompleta = h.trim();
-		if (h.equals("")) {
-			horaCompleta = "N/C";
-		} else {
-			String hora = horaCompleta.substring(0, 2);
-			String minuto = horaCompleta.substring(2, 4);
-			horaCompleta = hora + ":" + minuto;
 
+		String horaCompleta = h.trim();
+		
+		
+			
+		try {
+
+			if (h.equals("")) {
+				horaCompleta = "N/C";
+			} else {
+				if(horaCompleta.length() < 4 )
+				{
+					horaCompleta =	String.format("%04d", Integer.parseInt(horaCompleta));
+					String hora1 = horaCompleta.substring(0, 2);
+					String minuto1 = horaCompleta.substring(2, 4);
+					horaCompleta = hora1 + ":" + minuto1;
+				}
+				else
+				{
+				String hora = horaCompleta.substring(0, 2);
+				String minuto = horaCompleta.substring(2, 4);
+				horaCompleta = hora + ":" + minuto;
+				}
+
+			}
+		} catch (Exception e) {
+			System.out.println("Err ao listar o relatórioooo. Mensagem: " + e.getMessage());
 		}
 		return horaCompleta;
 	}
@@ -70,27 +89,39 @@ public class FormataDataHora {
 		}
 		return tempo;
 	}
+
 	public static String calculaSomaTEmpo(String horaIni, String horaFim) {
 		String horaSomada = "";
-		String[] strHoraCompletaInicio = horaIni.split(":");
-		String[] strHoraCompletaFim = horaFim.split(":");
-		
-	
-		
-		Integer hrInicio = Integer.parseInt(strHoraCompletaInicio[0]);
-		Integer minInicio = Integer.parseInt(strHoraCompletaInicio[1]);
-		Integer hrFim = Integer.parseInt(strHoraCompletaFim[0]);
-		Integer minFim = Integer.parseInt(strHoraCompletaFim[1]);
+		try {
+			if (horaIni.equals("N/C"))
+				horaIni = "00:00";
+			if (horaFim.equals("N/C"))
+				horaFim = "00:00";
 
-		Integer minSoma = (hrInicio * 60) + (hrFim *60) + minInicio+ minFim;
-		Integer hrTotal= minSoma/60;
-		Integer minTotal= minSoma%60;
-		horaSomada = String.format("%02d",hrTotal) + ":" + String.format("%02d",minTotal);
-	
+			String[] strHoraCompletaInicio = horaIni.split(":");
+			String[] strHoraCompletaFim = horaFim.split(":");
+
+			Integer hrInicio = Integer.parseInt(strHoraCompletaInicio[0]);
+			Integer minInicio = Integer.parseInt(strHoraCompletaInicio[1]);
+			Integer hrFim = Integer.parseInt(strHoraCompletaFim[0]);
+			Integer minFim = Integer.parseInt(strHoraCompletaFim[1]);
+
+			Integer minSoma = (hrInicio * 60) + (hrFim * 60) + minInicio + minFim;
+			Integer hrTotal = minSoma / 60;
+			Integer minTotal = minSoma % 60;
+			if (hrTotal.toString().length() < 2)
+				horaSomada = String.format("%02d", hrTotal) + ":" + String.format("%02d", minTotal);
+			else
+				horaSomada = hrTotal + ":" + String.format("%02d", minTotal);
+		} catch (Exception e) {
+			System.out.println("Erro ao listar o relaaatório.Mensagem: " + e.getMessage());
+		}
+
 		return horaSomada;
 	}
-	
-	public static String calculaSomaTotal(String jan, String fev,String mar, String abr,String mai, String jun,String jul, String ago,String set, String out,String nov, String dez) {
+
+	public static String calculaSomaTotal(String jan, String fev, String mar, String abr, String mai, String jun,
+			String jul, String ago, String set, String out, String nov, String dez) {
 		String horaSomada = "";
 		String[] strJan = jan.split(":");
 		String[] strFev = fev.split(":");
@@ -104,10 +135,7 @@ public class FormataDataHora {
 		String[] strOut = out.split(":");
 		String[] strNov = nov.split(":");
 		String[] strDez = dez.split(":");
-	
-		
-	
-		
+
 		Integer hrJan = Integer.parseInt(strJan[0]);
 		Integer minJan = Integer.parseInt(strJan[1]);
 		Integer hrFev = Integer.parseInt(strFev[0]);
@@ -132,14 +160,18 @@ public class FormataDataHora {
 		Integer minNov = Integer.parseInt(strNov[1]);
 		Integer hrDez = Integer.parseInt(strDez[0]);
 		Integer minDez = Integer.parseInt(strDez[1]);
-		
 
-		Integer minSoma = (hrJan * 60) + (hrFev * 60) +(hrMar * 60) +(hrAbr * 60) +(hrMai * 60) +(hrJun * 60) +(hrJul * 60) +(hrAgo * 60) +(hrSet * 60) +(hrOut * 60) +(hrNov * 60) +(hrDez * 60) + minJan + minFev + minMar + minAbr + minMai + minJun + minJul + minAgo + minSet + minOut + minNov + minDez;
-		Integer hrTotal= minSoma/60;
-		Integer minTotal= minSoma%60;
-		horaSomada = hrTotal + ":" +  String.format("%02d",minTotal);
-	
+		Integer minSoma = (hrJan * 60) + (hrFev * 60) + (hrMar * 60) + (hrAbr * 60) + (hrMai * 60) + (hrJun * 60)
+				+ (hrJul * 60) + (hrAgo * 60) + (hrSet * 60) + (hrOut * 60) + (hrNov * 60) + (hrDez * 60) + minJan
+				+ minFev + minMar + minAbr + minMai + minJun + minJul + minAgo + minSet + minOut + minNov + minDez;
+		Integer hrTotal = minSoma / 60;
+		Integer minTotal = minSoma % 60;
+		if (hrTotal.toString().length() < 2)
+			horaSomada = String.format("%02d", hrTotal) + ":" + String.format("%02d", minTotal);
+		else
+			horaSomada = hrTotal + ":" + String.format("%02d", minTotal);
+
 		return horaSomada;
 	}
-	
+
 }

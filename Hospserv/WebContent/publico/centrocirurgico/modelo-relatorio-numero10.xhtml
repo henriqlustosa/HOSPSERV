@@ -1,0 +1,106 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/templates/principal.xhtml">
+	<ui:define name="corpo">
+		<h1>Relatório: Total e Duração dos Procedimentos Realizados segundo Sala Cirúrgica
+		 do Centro Cirúrgico</h1>
+		<br />
+		<h:form id="relatorio10">
+			<h:panelGrid columns="2">
+
+
+
+				<p:outputLabel for="ano" value="Informe o Ano:" />
+				<p:inputMask id="ano" mask="9999" value="#{modeloRelatorioBean2.ano}" />
+
+				<p:outputLabel />
+				<p:commandButton id="pesqBtn" value="Pesquisar"
+					action="#{modeloRelatorioBean2.popularRelatorioNumero10()}"
+					update="@form" />
+			</h:panelGrid>
+
+
+			<p:blockUI block="relatorio10" trigger="pesqBtn">
+				Carregando...
+				<br />
+				<p:graphicImage value="/resources/img/ajax-loader.gif" />
+			</p:blockUI>
+			<hr />
+			<h:commandLink>
+				<p:graphicImage value="/resources/imagens/excel.png" width="24" />
+				<p:dataExporter type="xls" target="dt" fileName="porte" />
+			</h:commandLink>
+			<h:commandLink>
+				<p:graphicImage value="/resources/imagens/pdf.png" width="24" />
+				<p:dataExporter type="pdf" target="dt" fileName="porte" />
+			</h:commandLink>
+
+			<p:dataTable id="dt" var="modeloRelatorio2"
+				value="#{modeloRelatorioBean2.relatorioNumero10}"
+				emptyMessage="Nenhum Registro Encontrado" scrollable="true"
+				scrollHeight="300">
+				<f:facet name="header">
+        			Total e duração (em horas) dos Procedimentos Realizados, por Faixa de horário, segundo Sala Cirúrgica - Centro Obstétrico -Ano
+        			
+        			
+					
+
+				</f:facet>
+
+				<p:columnGroup type="header">
+					<p:row>
+						<p:column rowspan="2" headerText="Sala Cir." />
+						<p:column colspan="3" headerText="Procedimentos" />
+						<p:column colspan="3" headerText="Ocupação da sala"/>
+					</p:row>
+					<p:row>	
+						<p:column headerText="Eletivos" />
+						<p:column headerText="Urgência" />
+						<p:column headerText="Total" />
+						<p:column headerText="Eletivos" />
+						<p:column headerText="Urgência" />
+						<p:column headerText="Total" />
+					</p:row>
+				</p:columnGroup>
+
+
+				<p:column>
+					<h:outputText value="#{modeloRelatorio2.nomeSala}" />
+				</p:column>
+				<p:column>
+					<h:outputText value="#{modeloRelatorio2.procEletivos}"/> 
+				</p:column>
+				<p:column>
+					<h:outputText value="#{modeloRelatorio2.procUrgencia}" />
+				</p:column>
+				<p:column>
+					<h:outputText value="#{modeloRelatorio2.procTotal}" />
+				</p:column>
+				<p:column>
+					<h:outputText value="#{modeloRelatorio2.ocupEletivos}" />
+				</p:column>
+				<p:column>
+					<h:outputText value="#{modeloRelatorio2.ocupUrgencia}" />
+				</p:column>
+				<p:column>
+					<h:outputText value="#{modeloRelatorio2.ocupTotal}" />
+				</p:column>
+				
+
+
+			</p:dataTable>
+
+
+
+		</h:form>
+
+
+
+	</ui:define>
+	</ui:composition>
+</html>

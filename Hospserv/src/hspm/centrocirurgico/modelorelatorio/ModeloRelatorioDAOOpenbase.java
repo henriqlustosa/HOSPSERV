@@ -72,7 +72,7 @@ public class ModeloRelatorioDAOOpenbase {
 					stmt1.setString(3, dtInicio);
 					stmt1.setString(4, dtFim);
 					rs1 = stmt1.executeQuery();
-					while (rs1.next()) {
+					while (rs1 != null && rs1.next()) {
 						if (horario[j][2] == "DIA") {
 							p.setTempoMesProcDia(FormataDataHora.calculaSomaTEmpo(p.getTempoMesProcDia(),
 									FormataDataHora.calculaDiffHora(
