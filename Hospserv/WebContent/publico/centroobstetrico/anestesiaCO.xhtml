@@ -1,0 +1,121 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/templates/principal.xhtml">
+	<ui:define name="corpo">
+	<h1>Anestesias Centro Obstétrico</h1>
+		<br />
+		<h:form id="qtdAnestesias">
+			<h:panelGrid columns="2">
+
+
+
+				<p:outputLabel for="ano" value="Informe o Ano:" />
+				<p:inputMask id="ano" mask="9999" value="#{anestesiaBean.ano}" />
+				<p:outputLabel />
+
+
+
+
+				<p:commandButton id="pesqBtn" value="Pesquisar"
+					action="#{anestesiaBean.popularListarQuantidadeAnestesia()}"
+					update="@form" >
+					
+					<f:setPropertyActionListener target="#{anestesiaBean.local}" value="2" />
+					</p:commandButton>
+					
+					
+			</h:panelGrid>
+
+
+			<p:blockUI block="qtdAnestesias" trigger="pesqBtn">
+				Carregando...
+				<br />
+				<p:graphicImage value="/resources/img/ajax-loader.gif" />
+			</p:blockUI>
+			<hr />
+			<h:commandLink>
+				<p:graphicImage value="/resources/imagens/excel.png" width="24" />
+				<p:dataExporter type="xls" target="dt" fileName="porte" />
+			</h:commandLink>
+			<h:commandLink>
+				<p:graphicImage value="/resources/imagens/pdf.png" width="24" />
+				<p:dataExporter type="pdf" target="dt" fileName="porte" />
+			</h:commandLink>
+
+			<p:dataTable id="dt" var="anestesia"
+				value="#{anestesiaBean.listarQuantidadeAnestesia}"
+				emptyMessage="Nenhum Registro Encontrado" scrollable="true"
+				scrollHeight="300">
+				<f:facet name="header">
+        			Quantidade de Anestesias por Tipo Centro Obstétrico
+        			
+        			<p:commandButton id="toggler" type="button" value="Colunas"
+						icon="ui-icon-calculator" />
+					<p:columnToggler datasource="dt" trigger="toggler" />
+
+				</f:facet>
+
+				<p:column headerText="NOME DA ANESTESIA" style="text-align: left; width:85px;">
+					<h:outputText value="#{anestesia.descAnestesia}" />
+				</p:column>
+
+				
+				<p:column headerText="JAN" style="text-align: center; width:50px">
+					<h:outputText value="#{anestesia.qtdJan}"  />
+				</p:column>
+				<p:column headerText="FEV" style="text-align: center; width:50px">
+					<h:outputText value="#{anestesia.qtdFev}" />
+				</p:column>
+				<p:column headerText="MAR" style="text-align: center; width:50px">
+					<h:outputText value="#{anestesia.qtdMar}" />
+				</p:column>
+				<p:column headerText="ABR" style="text-align: center; width:50px">
+					<h:outputText value="#{anestesia.qtdAbr}" />
+				</p:column>
+				<p:column headerText="MAI" style="text-align: center; width:50px">
+					<h:outputText value="#{anestesia.qtdMai}" />
+				</p:column>
+				<p:column headerText="JUN" style="text-align: center; width:50px">
+					<h:outputText value="#{anestesia.qtdJun}" />
+				</p:column>
+				<p:column headerText="JUL" style="text-align: center; width:50px">
+					<h:outputText value="#{anestesia.qtdJul}" />
+				</p:column>
+				<p:column headerText="AGO" style="text-align: center; width:50px">
+					<h:outputText value="#{anestesia.qtdAgo}" />
+				</p:column>
+				<p:column headerText="SET" style="text-align: center; width:50px">
+					<h:outputText value="#{anestesia.qtdSet}" />
+				</p:column>
+				<p:column headerText="OUT" style="text-align: center; width:50px">
+					<h:outputText value="#{anestesia.qtdOut}" />
+				</p:column>
+				<p:column headerText="NOV" style="text-align: center; width:50px">
+					<h:outputText value="#{anestesia.qtdNov}" />
+				</p:column>
+				<p:column headerText="DEZ" style="text-align: center; width:50px">
+					<h:outputText value="#{anestesia.qtdDez}" />
+				</p:column>
+				<p:column headerText="TOTAL" style="text-align: center; width:70px">
+					<h:outputText value="#{anestesia.total}" />
+				</p:column>
+				<f:facet name="footer">
+        			Total de registros #{anestesiaBean.listarQuantidadeAnestesia.size()} 
+    			</f:facet>
+
+			</p:dataTable>
+
+
+
+		</h:form>
+
+
+
+	</ui:define>
+</ui:composition>
+</html>

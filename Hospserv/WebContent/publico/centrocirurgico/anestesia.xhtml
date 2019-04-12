@@ -16,7 +16,6 @@
 
 				<p:outputLabel for="ano" value="Informe o Ano:" />
 				<p:inputMask id="ano" mask="9999" value="#{anestesiaBean.ano}" />
-
 				<p:outputLabel />
 
 
@@ -24,7 +23,12 @@
 
 				<p:commandButton id="pesqBtn" value="Pesquisar"
 					action="#{anestesiaBean.popularListarQuantidadeAnestesia()}"
-					update="@form" />
+					update="@form" >
+					
+					<f:setPropertyActionListener target="#{anestesiaBean.local}" value="1" />
+					</p:commandButton>
+					
+					
 			</h:panelGrid>
 
 

@@ -10,5 +10,5 @@
 		username="root"
 		password="calamares"
 		driverClassName="com.mysql.jdbc.Driver"
-		url="jdbc:mysql://10.48.19.62:3306/hospserv?autoReconnect=true"/>
+		url="jdbc:mysql://10.48.19.62:3306/hospserv?autoReconnect=true&amp;useSSL=false"/>
 </Context>

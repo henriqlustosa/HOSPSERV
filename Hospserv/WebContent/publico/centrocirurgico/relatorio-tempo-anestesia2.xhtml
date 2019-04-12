@@ -1,0 +1,113 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+	<ui:composition template="/templates/principal.xhtml">
+	<ui:define name="corpo">
+	<h1>Relatório Tempo de Anestesia por Anestesia</h1>
+		<br />
+		<h:form id="relatorio5">
+			<h:panelGrid columns="2">
+
+
+
+				<p:outputLabel for="ano" value="Informe o Ano:" />
+				<p:inputMask id="ano" mask="9999" value="#{anestesiaBean.ano}" />
+
+				<p:outputLabel />
+				<p:commandButton id="pesqBtn" value="Pesquisar"
+					action="#{anestesiaBean.popularRelatorioNumero5()}"
+					update="@form" />
+			</h:panelGrid>
+
+
+			<p:blockUI block="relatorio5" trigger="pesqBtn">
+				Carregando...
+				<br />
+				<p:graphicImage value="/resources/img/ajax-loader.gif" />
+			</p:blockUI>
+			<hr />
+			<h:commandLink>
+				<p:graphicImage value="/resources/imagens/excel.png" width="24" />
+				<p:dataExporter type="xls" target="dt" fileName="porte" />
+			</h:commandLink>
+			<h:commandLink>
+				<p:graphicImage value="/resources/imagens/pdf.png" width="24" />
+				<p:dataExporter type="pdf" target="dt" fileName="porte" />
+			</h:commandLink>
+
+			<p:dataTable id="dt" var="anestesia"
+				value="#{anestesiaBean.relatorioNumero5}"
+				emptyMessage="Nenhum Registro Encontrado" scrollable="true"
+				scrollHeight="300">
+				<f:facet name="header">
+        			Tempo Total de Anestesia
+        			
+        			<p:commandButton id="toggler" type="button" value="Colunas"
+						icon="ui-icon-calculator" />
+					<p:columnToggler datasource="dt" trigger="toggler" />
+
+				</f:facet>
+
+				<p:column headerText="ANESTESIA" style="text-align: left; width:270px;">
+					<h:outputText value="#{anestesia.nomeProfissional}" />
+				</p:column>
+
+				
+				<p:column headerText="JAN" style="text-align: center; width:50px">
+					<h:outputText value="#{anestesia.hrsJan}"  />
+				</p:column>
+				<p:column headerText="FEV" style="text-align: center; width:50px">
+					<h:outputText value="#{anestesia.hrsFev}" />
+				</p:column>
+				<p:column headerText="MAR" style="text-align: center; width:50px">
+					<h:outputText value="#{anestesia.hrsMar}" />
+				</p:column>
+				<p:column headerText="ABR" style="text-align: center; width:50px">
+					<h:outputText value="#{anestesia.hrsAbr}" />
+				</p:column>
+				<p:column headerText="MAI" style="text-align: center; width:50px">
+					<h:outputText value="#{anestesia.hrsMai}" />
+				</p:column>
+				<p:column headerText="JUN" style="text-align: center; width:50px">
+					<h:outputText value="#{anestesia.hrsJun}" />
+				</p:column>
+				<p:column headerText="JUL" style="text-align: center; width:50px">
+					<h:outputText value="#{anestesia.hrsJul}" />
+				</p:column>
+				<p:column headerText="AGO" style="text-align: center; width:50px">
+					<h:outputText value="#{anestesia.hrsAgo}" />
+				</p:column>
+				<p:column headerText="SET" style="text-align: center; width:50px">
+					<h:outputText value="#{anestesia.hrsSet}" />
+				</p:column>
+				<p:column headerText="OUT" style="text-align: center; width:50px">
+					<h:outputText value="#{anestesia.hrsOut}" />
+				</p:column>
+				<p:column headerText="NOV" style="text-align: center; width:50px">
+					<h:outputText value="#{anestesia.hrsNov}" />
+				</p:column>
+				<p:column headerText="DEZ" style="text-align: center; width:50px">
+					<h:outputText value="#{anestesia.hrsDez}" />
+				</p:column>
+				<p:column headerText="TOTAL" style="text-align: center; width:60px">
+					<h:outputText value="#{anestesia.hrsTotal}" />
+				</p:column>
+				<f:facet name="footer">
+        			Total de registros #{anestesiaBean.relatorioNumero5.size()} 
+    			</f:facet>
+
+			</p:dataTable>
+
+
+
+		</h:form>
+
+
+
+	</ui:define>
+	</ui:composition>
+</html>

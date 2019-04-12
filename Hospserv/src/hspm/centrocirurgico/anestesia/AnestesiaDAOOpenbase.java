@@ -46,28 +46,61 @@ public class AnestesiaDAOOpenbase implements AnestesiaDAO {
 	}
 
 	@Override
-	public List<Anestesia> listarQuantidadeAnestesia(Integer ano) {
+	public List<Anestesia> listarQuantidadeAnestesia(Integer ano, Integer local) {
 
+		Integer loc = local;
+		
+		String sqlCombinada1 = "";
+		String sqlGeral1 = "";
+		String sqlLocal1 = "";
+		String sqlPeridural1 = "";
+		String sqlRaquidiana1 = "";
+		String sqlSedacao1 = "";
+		String sqlCombinada2 = "";
+		String sqlGeral2 = "";
+		String sqlLocal2 = "";
+		String sqlPeridural2 = "";
+		String sqlRaquidiana2 = "";
+		String sqlSedacao2 = "";
+
+		
+		
+		
 		List<Anestesia> lista = new ArrayList<Anestesia>();
 		String[] meses = { "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12" };
 		String[] nomeAnestesia = { "Combinada", "Geral", "Local", "Peridural", "Raquidiana", "Sedação" };
 		String[] tipoCodAnestesia = { "codAnestesia1", "codAnestesia2" };
 
 		String sql = "";
-
-		String sqlCombinada1 = "select count(*) as qtd1 from cir38 where (c38codanest1 = '07' or  c38codanest1 = '03' or c38codanest1 = '04')  and   d38dataexec >= ? and d38dataexec <= ? ";
-		String sqlGeral1 = "select count(*) as qtd1 from cir38 where (c38codanest1 = '02' or  c38codanest1 = '01')  and   d38dataexec >= ? and d38dataexec <= ? ";
-		String sqlLocal1 = "select count(*) as qtd1 from cir38 where (c38codanest1 = '12' or  c38codanest1 = '13' or c38codanest1 = '15' or c38codanest1 = '16' or  c38codanest1 = '14' or c38codanest1 = '06' or c38codanest1 = '10' or c38codanest1 = '17' or  c38codanest1 = '18')  and   d38dataexec >= ? and d38dataexec <= ? ";
-		String sqlPeridural1 = "select count(*) as qtd1 from cir38 where (c38codanest1 = '09') and d38dataexec >= ? and d38dataexec <= ? ";
-		String sqlRaquidiana1 = "select count(*) as qtd1 from cir38 where (c38codanest1 = '08') and d38dataexec >= ? and d38dataexec <= ? ";
-		String sqlSedacao1 = "select count(*) as qtd1 from cir38 where (c38codanest1 = '05')  and   d38dataexec >= ? and d38dataexec <= ? ";
-		String sqlCombinada2 = "select count(*) as qtd1 from cir38 where (c38codanest2 = '07' or  c38codanest2 = '03' or c38codanest2 = '04') and   d38dataexec >= ? and d38dataexec <= ? ";
-		String sqlGeral2 = "select count(*) as qtd1 from cir38 where (c38codanest2 = '02' or  c38codanest2 = '01') and   d38dataexec >= ? and d38dataexec <= ? ";
-		String sqlLocal2 = "select count(*) as qtd1 from cir38 where (c38codanest2 = '12' or  c38codanest2 = '13' or c38codanest2 = '15' or c38codanest2 = '16' or  c38codanest2 = '14' or c38codanest2 = '06' or c38codanest2 = '10' or c38codanest2 = '17' or  c38codanest2 = '18') and   d38dataexec >= ? and d38dataexec <= ? ";
-		String sqlPeridural2 = "select count(*) as qtd1 from cir38 where  (c38codanest2 = '09') and   d38dataexec >= ? and d38dataexec <= ? ";
-		String sqlRaquidiana2 = "select count(*) as qtd1 from cir38 where  (c38codanest2 = '08') and   d38dataexec >= ? and d38dataexec <= ? ";
-		String sqlSedacao2 = "select count(*) as qtd1 from cir38 where  (c38codanest2 = '05') and   d38dataexec >= ? and d38dataexec <= ? ";
-
+		
+		if(loc.equals(1)){
+			sqlCombinada1 = "select count(*) as qtd1 from cir38 where (c38codanest1 = '07' or  c38codanest1 = '03' or c38codanest1 = '04')  and   d38dataexec >= ? and d38dataexec <= ? ";
+			sqlGeral1 = "select count(*) as qtd1 from cir38 where (c38codanest1 = '02' or  c38codanest1 = '01')  and   d38dataexec >= ? and d38dataexec <= ? ";
+			sqlLocal1 = "select count(*) as qtd1 from cir38 where (c38codanest1 = '12' or  c38codanest1 = '13' or c38codanest1 = '15' or c38codanest1 = '16' or  c38codanest1 = '14' or c38codanest1 = '06' or c38codanest1 = '10' or c38codanest1 = '17' or  c38codanest1 = '18')  and   d38dataexec >= ? and d38dataexec <= ? ";
+			sqlPeridural1 = "select count(*) as qtd1 from cir38 where (c38codanest1 = '09') and d38dataexec >= ? and d38dataexec <= ? ";
+			sqlRaquidiana1 = "select count(*) as qtd1 from cir38 where (c38codanest1 = '08') and d38dataexec >= ? and d38dataexec <= ? ";
+			sqlSedacao1 = "select count(*) as qtd1 from cir38 where (c38codanest1 = '05')  and   d38dataexec >= ? and d38dataexec <= ? ";
+			sqlCombinada2 = "select count(*) as qtd1 from cir38 where (c38codanest2 = '07' or  c38codanest2 = '03' or c38codanest2 = '04') and   d38dataexec >= ? and d38dataexec <= ? ";
+			sqlGeral2 = "select count(*) as qtd1 from cir38 where (c38codanest2 = '02' or  c38codanest2 = '01') and   d38dataexec >= ? and d38dataexec <= ? ";
+			sqlLocal2 = "select count(*) as qtd1 from cir38 where (c38codanest2 = '12' or  c38codanest2 = '13' or c38codanest2 = '15' or c38codanest2 = '16' or  c38codanest2 = '14' or c38codanest2 = '06' or c38codanest2 = '10' or c38codanest2 = '17' or  c38codanest2 = '18') and   d38dataexec >= ? and d38dataexec <= ? ";
+			sqlPeridural2 = "select count(*) as qtd1 from cir38 where  (c38codanest2 = '09') and   d38dataexec >= ? and d38dataexec <= ? ";
+			sqlRaquidiana2 = "select count(*) as qtd1 from cir38 where  (c38codanest2 = '08') and   d38dataexec >= ? and d38dataexec <= ? ";
+			sqlSedacao2 = "select count(*) as qtd1 from cir38 where  (c38codanest2 = '05') and   d38dataexec >= ? and d38dataexec <= ? ";
+		}else if(loc.equals(2)){
+			sqlCombinada1 = "select count(*) as qtd1 from cir38 where (c38codsala like '8%') and (c38codanest1 = '07' or  c38codanest1 = '03' or c38codanest1 = '04')  and   d38dataexec >= ? and d38dataexec <= ? ";
+			sqlGeral1 = "select count(*) as qtd1 from cir38 where (c38codsala like '8%') and (c38codanest1 = '02' or  c38codanest1 = '01')  and   d38dataexec >= ? and d38dataexec <= ? ";
+			sqlLocal1 = "select count(*) as qtd1 from cir38 where (c38codsala like '8%') and (c38codanest1 = '12' or  c38codanest1 = '13' or c38codanest1 = '15' or c38codanest1 = '16' or  c38codanest1 = '14' or c38codanest1 = '06' or c38codanest1 = '10' or c38codanest1 = '17' or  c38codanest1 = '18')  and   d38dataexec >= ? and d38dataexec <= ? ";
+			sqlPeridural1 = "select count(*) as qtd1 from cir38 where (c38codsala like '8%') and (c38codanest1 = '09') and d38dataexec >= ? and d38dataexec <= ? ";
+			sqlRaquidiana1 = "select count(*) as qtd1 from cir38 where (c38codsala like '8%') and (c38codanest1 = '08') and d38dataexec >= ? and d38dataexec <= ? ";
+			sqlSedacao1 = "select count(*) as qtd1 from cir38 where (c38codsala like '8%') and (c38codanest1 = '05')  and   d38dataexec >= ? and d38dataexec <= ? ";
+			sqlCombinada2 = "select count(*) as qtd1 from cir38 where (c38codsala like '8%') and (c38codanest2 = '07' or  c38codanest2 = '03' or c38codanest2 = '04') and   d38dataexec >= ? and d38dataexec <= ? ";
+			sqlGeral2 = "select count(*) as qtd1 from cir38 where (c38codsala like '8%') and (c38codanest2 = '02' or  c38codanest2 = '01') and   d38dataexec >= ? and d38dataexec <= ? ";
+			sqlLocal2 = "select count(*) as qtd1 from cir38 where (c38codsala like '8%') and (c38codanest2 = '12' or  c38codanest2 = '13' or c38codanest2 = '15' or c38codanest2 = '16' or  c38codanest2 = '14' or c38codanest2 = '06' or c38codanest2 = '10' or c38codanest2 = '17' or  c38codanest2 = '18') and   d38dataexec >= ? and d38dataexec <= ? ";
+			sqlPeridural2 = "select count(*) as qtd1 from cir38 where (c38codsala like '8%') and (c38codanest2 = '09') and   d38dataexec >= ? and d38dataexec <= ? ";
+			sqlRaquidiana2 = "select count(*) as qtd1 from cir38 where (c38codsala like '8%') and (c38codanest2 = '08') and   d38dataexec >= ? and d38dataexec <= ? ";
+			sqlSedacao2 = "select count(*) as qtd1 from cir38 where (c38codsala like '8%') and (c38codanest2 = '05') and   d38dataexec >= ? and d38dataexec <= ? ";
+		}
+		
 		Anestesia p;
 
 		for (String nomeAnest : nomeAnestesia) {
@@ -202,9 +235,7 @@ public class AnestesiaDAOOpenbase implements AnestesiaDAO {
 			p = null;
 			total = 0;
 		}
-
 		return lista;
-
 	}
 
 	public List<Anestesia> relatorioNumero3(Integer ano) {
@@ -224,6 +255,8 @@ public class AnestesiaDAOOpenbase implements AnestesiaDAO {
 		String dtFimTotal = "";
 		dtInicioTotal = ano.toString() + "0101";
 		dtFimTotal = ano.toString() + "1231";
+		
+		
 		try {
 			stmt = conn.prepareStatement(sql);
 			stmt.setString(1, dtInicioTotal);
@@ -584,6 +617,248 @@ public class AnestesiaDAOOpenbase implements AnestesiaDAO {
 		lista.sort(c);
 		return lista;
 
+	}
+	
+	
+	public List<Anestesia> relatorioNumero5(Integer ano) {
+		String dtInicio = "";
+		String dtFim = "";
+
+		List<Anestesia> lista = new ArrayList<Anestesia>();
+		List<Long> cpfProfissional = new ArrayList<Long>();
+		String[] meses = { "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12" };
+		
+		//String sql = "select i40cpfmed from cir40 where c40codatu ='02'and d40dataexec >= ? and d40dataexec <= ? group by i40cpfmed";
+		String sql = "select c38codanest1 from cir38 where d38dataexec >= ? and d38dataexec <= ? group by c38codanest1";
+		
+		//String sql1 = "select ic0nome from intc0 where ic0cpf = ?";
+		String sql1 = "select c30nomeanest from cir30 where c30codanest = ?";
+		
+		
+		//String sql2 = "select i40numseq, i40anoref from cir40 where i40cpfmed= ? and c40codatu ='02'and d40dataexec >= ? and d40dataexec <= ?";
+		String sql2 = "select i38numseq, i38anoref from cir38 where c38codanest1 = ? and d38dataexec >= ? and d38dataexec <= ?";
+		
+		
+		String sql3 = "select c38hinianest,c38hfimanest from cir38 where i38numseq = ? and i38anoref = ? ";
+
+		Connection conn = new ConexaoOpenbase().getConnection();
+		ResultSet rs = null;
+		PreparedStatement stmt = null;
+
+		Anestesia p;
+		String dtInicioTotal = "";
+		String dtFimTotal = "";
+		dtInicioTotal = ano.toString() + "0101";
+		dtFimTotal = ano.toString() + "1231";
+		try {
+			stmt = conn.prepareStatement(sql);
+			stmt.setString(1, dtInicioTotal);
+			stmt.setString(2, dtFimTotal);
+			rs = stmt.executeQuery();
+			while (rs.next()) {
+				//cpfProfissional.add(rs.getLong("i40cpfmed"));
+				cpfProfissional.add(rs.getLong("c38codanest1"));
+			}
+		} catch (Exception e) {
+			System.out.println("Erro ao listar anestesiaaa. Mensagem: " + e.getMessage());
+		} finally {
+			try {
+				stmt.close();
+				conn.close();
+			} catch (Throwable ex) {
+				System.out.println("Erro ao fechar operações de busca. Mensagem: " + ex.getMessage());
+			}
+		}
+		for (Long cpf : cpfProfissional) {
+			String strCpf = "";
+			
+			
+			p = new Anestesia();
+
+			p.setCpfProfissional(cpf);
+			
+			if(cpf.toString().length() == 1){
+				strCpf = "0" + cpf;
+			}else{
+				strCpf = cpf.toString();
+			}
+
+			Connection conn1 = new ConexaoOpenbase().getConnection();
+			ResultSet rs1 = null;
+			PreparedStatement stmt1 = null;
+			try {
+
+				stmt1 = conn1.prepareStatement(sql1);
+				stmt1.setString(1, strCpf);
+				rs1 = stmt1.executeQuery();
+				if (rs1.next()) {
+
+					//p.setNomeProfissional(rs1.getString("ic0nome"));
+					p.setNomeProfissional(rs1.getString("c30nomeanest"));
+				}
+
+			}
+
+			catch (Exception e) {
+				System.out.println("Erro ao listarr o relatório. Mensagem: " + e.getMessage());
+			} finally {
+				try {
+					stmt1.close();
+					conn1.close();
+				} catch (Throwable ex) {
+					System.out.println(
+							"Erro ao fechar operações de busca neste relatório . Mensagem: " + ex.getMessage());
+				}
+			}
+
+			for (String mes : meses) {
+
+				Connection conn2 = new ConexaoOpenbase().getConnection();
+				ResultSet rs2 = null;
+				PreparedStatement stmt2 = null;
+				dtInicio = ano.toString() + mes + "01";
+				dtFim = ano.toString() + mes + "31";
+
+				try {
+					stmt2 = conn2.prepareStatement(sql2);
+					stmt2.setString(1, strCpf);
+					stmt2.setString(2, dtInicio);
+					stmt2.setString(3, dtFim);
+
+					rs2 = stmt2.executeQuery();
+					while (rs2 != null && rs2.next()) {
+						p.setCodCirurgia(rs2.getInt("i38numseq"));
+						p.setAnoReferencia(rs2.getInt("i38anoref"));
+						Integer codCirurgia = p.getCodCirurgia();
+						Integer anoReferencia = p.getAnoReferencia();
+						Connection conn3 = new ConexaoOpenbase().getConnection();
+						ResultSet rs3 = null;
+						PreparedStatement stmt3 = null;
+
+						try {
+							stmt3 = conn3.prepareStatement(sql3);
+							stmt3.setInt(1, codCirurgia);
+							stmt3.setInt(2, anoReferencia);
+
+							rs3 = stmt3.executeQuery();
+
+							while (rs3 != null && rs3.next()) {
+
+								if (mes == "01") {
+									p.setHrsJan(FormataDataHora.calculaSomaTEmpo(p.getHrsJan(),
+											FormataDataHora.calculaDiffHora(
+													FormataDataHora.formataHora(rs3.getString("c38hinianest")),
+													FormataDataHora.formataHora(rs3.getString("c38hfimanest")))));
+
+								} else if (mes == "02") {
+
+									p.setHrsFev(FormataDataHora.calculaSomaTEmpo(p.getHrsFev(),
+											FormataDataHora.calculaDiffHora(
+													FormataDataHora.formataHora(rs3.getString("c38hinianest")),
+													FormataDataHora.formataHora(rs3.getString("c38hfimanest")))));
+								} else if (mes == "03") {
+
+									p.setHrsMar(FormataDataHora.calculaSomaTEmpo(p.getHrsMar(),
+											FormataDataHora.calculaDiffHora(
+													FormataDataHora.formataHora(rs3.getString("c38hinianest")),
+													FormataDataHora.formataHora(rs3.getString("c38hfimanest")))));
+								} else if (mes == "04") {
+
+									p.setHrsAbr(FormataDataHora.calculaSomaTEmpo(p.getHrsAbr(),
+											FormataDataHora.calculaDiffHora(
+													FormataDataHora.formataHora(rs3.getString("c38hinianest")),
+													FormataDataHora.formataHora(rs3.getString("c38hfimanest")))));
+								} else if (mes == "05") {
+
+									p.setHrsMai(FormataDataHora.calculaSomaTEmpo(p.getHrsMai(),
+											FormataDataHora.calculaDiffHora(
+													FormataDataHora.formataHora(rs3.getString("c38hinianest")),
+													FormataDataHora.formataHora(rs3.getString("c38hfimanest")))));
+								} else if (mes == "06") {
+
+									p.setHrsJun(FormataDataHora.calculaSomaTEmpo(p.getHrsJun(),
+											FormataDataHora.calculaDiffHora(
+													FormataDataHora.formataHora(rs3.getString("c38hinianest")),
+													FormataDataHora.formataHora(rs3.getString("c38hfimanest")))));
+								} else if (mes == "07") {
+
+									p.setHrsJul(FormataDataHora.calculaSomaTEmpo(p.getHrsJul(),
+											FormataDataHora.calculaDiffHora(
+													FormataDataHora.formataHora(rs3.getString("c38hinianest")),
+													FormataDataHora.formataHora(rs3.getString("c38hfimanest")))));
+								} else if (mes == "08") {
+
+									p.setHrsAgo(FormataDataHora.calculaSomaTEmpo(p.getHrsAgo(),
+											FormataDataHora.calculaDiffHora(
+													FormataDataHora.formataHora(rs3.getString("c38hinianest")),
+													FormataDataHora.formataHora(rs3.getString("c38hfimanest")))));
+								} else if (mes == "09") {
+
+									p.setHrsSet(FormataDataHora.calculaSomaTEmpo(p.getHrsSet(),
+											FormataDataHora.calculaDiffHora(
+													FormataDataHora.formataHora(rs3.getString("c38hinianest")),
+													FormataDataHora.formataHora(rs3.getString("c38hfimanest")))));
+								} else if (mes == "10") {
+
+									p.setHrsOut(FormataDataHora.calculaSomaTEmpo(p.getHrsOut(),
+											FormataDataHora.calculaDiffHora(
+													FormataDataHora.formataHora(rs3.getString("c38hinianest")),
+													FormataDataHora.formataHora(rs3.getString("c38hfimanest")))));
+								} else if (mes == "11") {
+
+									p.setHrsNov(FormataDataHora.calculaSomaTEmpo(p.getHrsNov(),
+											FormataDataHora.calculaDiffHora(
+													FormataDataHora.formataHora(rs3.getString("c38hinianest")),
+													FormataDataHora.formataHora(rs3.getString("c38hfimanest")))));
+								} else if (mes == "12") {
+
+									p.setHrsDez(FormataDataHora.calculaSomaTEmpo(p.getHrsDez(),
+											FormataDataHora.calculaDiffHora(
+													FormataDataHora.formataHora(rs3.getString("c38hinianest")),
+													FormataDataHora.formataHora(rs3.getString("c38hfimanest")))));
+								}
+
+							}
+
+						} catch (Exception e) {
+							System.out.println("Erro aaao listar o relatório. Mensagem: " + e.getMessage());
+						} finally {
+							try {
+								stmt3.close();
+								conn3.close();
+							} catch (Throwable ex) {
+								System.out.println("Erro ao fechar operações dede busca neste relatório. Mensagem: "
+										+ ex.getMessage());
+							}
+						}
+
+					}
+
+				} catch (Exception e) {
+					System.out.println("Erro ao listar o relatório. Mensagem: " + e.getMessage());
+				} finally {
+					try {
+						stmt2.close();
+						conn2.close();
+					} catch (Throwable ex) {
+						System.out.println(
+								"Erro ao fechar operações dede busca neste relatório. Mensagem: " + ex.getMessage());
+					}
+				}
+
+			}
+			p.setHrsTotal(FormataDataHora.calculaSomaTotal(p.getHrsJan(), p.getHrsFev(), p.getHrsMar(), p.getHrsAbr(),
+					p.getHrsMai(), p.getHrsJun(), p.getHrsJul(), p.getHrsAgo(), p.getHrsSet(), p.getHrsOut(),
+					p.getHrsNov(), p.getHrsDez()));
+			lista.add(p);
+			p = null;
+		}
+
+		//Comparator<Anestesia> c = (s1, s2) -> s1.getNomeProfissional().compareTo(s2.getNomeProfissional());
+		//Comparator<Anestesia> c = (s1, s2) -> s1.getDescAnestesia().compareTo(s2.getDescAnestesia());
+		
+		//lista.sort(c);
+		return lista;
 	}
 
 }
