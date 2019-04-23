@@ -99,9 +99,11 @@
 				<p:column headerText="Tempo de RPA">
 					<h:outputText value="#{cirurgia.tempoRPA}" />
 				</p:column>
-
 				<p:column headerText="Sala Cirúrgica"  style="width:110px">
 					<h:outputText value="#{cirurgia.salaCirurcica}" />
+				</p:column>
+				<p:column headerText="Porte">
+					<h:outputText value="#{cirurgia.porte}" />
 				</p:column>
 				<f:facet name="footer">
         			Total de registros #{cirurgiaBean.listaRealizadaClinica.size()} 

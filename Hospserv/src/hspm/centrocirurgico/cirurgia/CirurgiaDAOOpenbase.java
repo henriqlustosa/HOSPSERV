@@ -291,7 +291,7 @@ public class CirurgiaDAOOpenbase implements CirurgiaDAO {
 
 		String sql = "Select d38dataexec, i38numseq, i38anoref, i38pront, i38numbolet, c38hinianest, "
 				+ "c38hiniexec,c38hfimexec, c38hentrec, c38hsairec, "
-				+ "c38hfimanest, c38hentrec, c38salarec,c38codsala, c29nomesala "
+				+ "c38hfimanest, c38hentrec, c38salarec,c38codsala, c29nomesala,c38porte "
 				+ "From tsql.cir38, tsql.cir29 Where c38codsala = c29codsala And c38codclin = ? And d38dataexec Between ? And ?";
 
 		List<Cirurgia> lista = new ArrayList<Cirurgia>();
@@ -325,6 +325,7 @@ public class CirurgiaDAOOpenbase implements CirurgiaDAO {
 				c.setTempoRPA(FormataDataHora.calculaDiffHora(FormataDataHora.formataHora(rs.getString("c38hentrec")),
 						FormataDataHora.formataHora(rs.getString("c38hsairec"))));
 				c.setSalaCirurcica(rs.getString("c38codsala") + " - " + rs.getString("c29nomesala"));
+				c.setPorte(rs.getString("c38porte"));
 				lista.add(c);
 				c = null;
 			}
